@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="hi"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Wiom · बुकिंग फ्लो · नवीन बनाम रमेश</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700;800&family=Noto+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg-surface:#faf9fc; --bg-neutral-sec:#f1eff5;
+  --bg-positive-pri:#e1faed; --bg-brand-focus:#d9008d; --bg-brand-subtle:#ffe6f6;
+  --bg-info-pri:#eeeafc; --purple:#6d17ce;
+  --text-pri:#161021; --text-sec:#665e75; --text-ter:#898296;
+  --text-positive:#008043; --text-brand:#d9008d;
+  --stroke-pri:#e8e4f0; --stroke-positive:#a5e5c6; --stroke-brand:#ffb3e4;
+  --ease:cubic-bezier(.22,1,.36,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Noto Sans','Noto Sans Devanagari',system-ui,sans-serif;background:#12101a;color:#e8e4f0;
+  min-height:100vh;display:flex;align-items:center;justify-content:center;gap:34px;padding:24px;-webkit-font-smoothing:antialiased}
+
+/* ── फोन ── */
+.phone{width:360px;height:720px;flex:0 0 360px;background:var(--bg-surface);border-radius:26px;
+  box-shadow:0 0 0 8px #232030,0 0 0 9px #383349,0 30px 70px rgba(0,0,0,.6);
+  position:relative;overflow:hidden;color:var(--text-pri);display:flex;flex-direction:column}
+.statusbar{height:24px;flex:0 0 24px;display:flex;align-items:center;justify-content:space-between;
+  padding:0 10px;font-size:11px;font-weight:600;color:#161021}
+.statusbar .ind{display:flex;align-items:center;gap:4px}
+.content{flex:1;overflow-y:auto;padding:0 16px 16px;scrollbar-width:none}
+.content::-webkit-scrollbar{display:none}
+
+.mark{display:flex;align-items:center;gap:9px;padding:14px 0 0}
+.mark svg{flex:none}
+.mark b{font-size:17px;font-weight:800;letter-spacing:-.2px}
+h1.h{font-size:26px;line-height:34px;font-weight:800;letter-spacing:-.5px;margin-top:22px}
+p.sub{font-size:14px;line-height:21px;color:var(--text-sec);margin-top:8px}
+
+.card{display:block;text-decoration:none;color:inherit;background:#fff;border:1.5px solid var(--stroke-pri);
+  border-radius:18px;padding:16px;margin-top:14px;cursor:pointer;position:relative;overflow:hidden;
+  transition:border-color .16s var(--ease),box-shadow .16s var(--ease),transform .16s var(--ease)}
+.card:hover{border-color:var(--stroke-brand);box-shadow:0 10px 26px -14px rgba(217,0,141,.55);transform:translateY(-2px)}
+.card:focus-visible{outline:2px solid var(--bg-brand-focus);outline-offset:2px}
+.card-top{display:flex;align-items:center;gap:10px}
+.card-ic{width:38px;height:38px;flex:none;border-radius:50%;display:grid;place-items:center}
+.card-ic.a{background:var(--bg-brand-subtle)}
+.card-ic.b{background:var(--bg-info-pri)}
+.card-nm{flex:1;min-width:0}
+.card-nm .n{display:block;font-size:17px;line-height:24px;font-weight:800}
+.card-nm .k{display:block;font-size:11.5px;line-height:16px;color:var(--text-ter);font-weight:700;margin-top:1px}
+.card-go{flex:none;color:var(--text-brand);font-size:20px;font-weight:800}
+.card-l{font-size:13.5px;line-height:20px;color:var(--text-sec);margin-top:11px}
+.card-l b{color:var(--text-pri);font-weight:700}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:11px}
+.chips span{font-size:10.5px;line-height:15px;font-weight:800;padding:3px 9px;border-radius:100px;
+  background:var(--bg-neutral-sec);color:var(--text-sec)}
+.chips span.g{background:var(--bg-positive-pri);color:var(--text-positive)}
+.chips span.p{background:var(--bg-brand-subtle);color:var(--text-brand)}
+
+.same{margin-top:20px;background:var(--bg-neutral-sec);border-radius:14px;padding:13px 14px}
+.same .t{font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--text-ter)}
+.same .l{font-size:12.5px;line-height:19px;color:var(--text-sec);margin-top:7px}
+.same .l b{color:var(--text-pri);font-weight:700}
+.foot{display:flex;align-items:flex-start;gap:7px;margin-top:16px;font-size:11.5px;line-height:17px;color:var(--text-ter)}
+.foot svg{flex:none;margin-top:1px}
+
+/* ── बग़ल का पैनल ── */
+.side{width:300px;flex:0 0 300px;display:flex;flex-direction:column;gap:14px}
+.side h2{font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#6f6885}
+.side .st{font-size:11px;color:#4e4860;margin-top:3px}
+.note{background:#191622;border:1px solid #2a2536;border-radius:14px;padding:13px 15px;
+  font-size:11.5px;line-height:1.75;color:#8f88a3}
+.note b{color:#cfc9de}
+.note + .note{margin-top:0}
+.note .hd{font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#4e4860;margin-bottom:6px}
+.diff{display:grid;grid-template-columns:auto 1fr;gap:6px 10px;margin-top:8px}
+.diff i{font-style:normal;color:#d9008d;font-weight:800}
+@media (max-width:900px){ body{flex-direction:column;gap:20px} .side{width:360px;flex:0 0 auto} }
+</style>
+</head>
+<body>
+
+<div class="phone">
+  <div class="statusbar"><span>4:35</span><span class="ind"><svg width="14" height="14" viewBox="0 0 24 24"><path d="M12 20l-9-9a6.4 6.4 0 019 0 6.4 6.4 0 019 0l-9 9z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><circle cx="12" cy="17" r="1.4" fill="currentColor"/></svg><svg width="14" height="14" viewBox="0 0 24 24"><path d="M3 20h4v-6H3v6zm6 0h4V9H9v11zm6 0h4V3h-4v17z" fill="currentColor"/></svg><span>50%</span></span></div>
+
+  <div class="content">
+    <div class="mark">
+      <svg width="34" height="14" viewBox="0 0 120 46" fill="none"><path d="M8 30c0-9 6-15 13-15s11 5 13 11c2 6 6 11 13 11s13-6 13-15" stroke="#d9008d" stroke-width="6" stroke-linecap="round"/><path d="M60 22c0 9 6 15 13 15s11-5 13-11c2-6 6-11 13-11s13 6 13 15" stroke="#d9008d" stroke-width="6" stroke-linecap="round" opacity=".5"/></svg>
+      <b>व्योम</b>
+    </div>
+
+    <h1 class="h">बुकिंग फ्लो · दो वर्शन</h1>
+    <p class="sub">दोनों में ₹10 बुकिंग फीस है। फ़र्क सिर्फ़ इतना है कि ऑफर कैसे दिखाया जाता है।</p>
+
+    <a class="card" href="naveen.html">
+      <div class="card-top">
+        <span class="card-ic a"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="3" y="8" width="18" height="4" rx="1" stroke="#d9008d" stroke-width="1.8"/><path d="M5 12v8h14v-8M12 8v12" stroke="#d9008d" stroke-width="1.8"/><path d="M12 8C11 5 9.5 4.5 8.5 5.2 7.3 6 8 8 12 8zM12 8c1-3 2.5-3.5 3.5-2.8C16.7 6 16 8 12 8z" stroke="#d9008d" stroke-width="1.6" stroke-linejoin="round"/></svg></span>
+        <span class="card-nm"><span class="n">नवीन वाला फ्लो</span><span class="k">3 ऑफर वाली स्क्रीन</span></span>
+        <span class="card-go">›</span>
+      </div>
+      <div class="card-l">तीन ऑफर एक साथ दिखते हैं: <b>2+2 · 7+7 · 14+14</b>। तीनों खाते में जुड़ते हैं, और नेट लगने वाले दिन जो रिचार्ज करेंगे उसी पर लगते हैं।</div>
+      <div class="chips"><span class="p">₹10 बुकिंग फीस</span><span class="g">3 ऑफर</span><span>22 स्क्रीन</span><span>A/B स्विच</span></div>
+    </a>
+
+    <a class="card" href="ramesh.html">
+      <div class="card-top">
+        <span class="card-ic b"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="3.5" y="4" width="17" height="16" rx="3" stroke="#6d17ce" stroke-width="1.8"/><path d="M7.5 9h9M7.5 12.5h9M7.5 16h5" stroke="#6d17ce" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+        <span class="card-nm"><span class="n">रमेश वाला फ्लो</span><span class="k">पूरी प्लान लिस्ट</span></span>
+        <span class="card-go">›</span>
+      </div>
+      <div class="card-l">पाँचों रिचार्ज के दाम एक साथ, और उनमें सिर्फ़ <b>एक ऑफर 14+14</b>। नेट लगवाने वाले दिन यही प्लान चुनकर उसका फ़ायदा लेना होता है।</div>
+      <div class="chips"><span class="p">₹10 बुकिंग फीस</span><span class="g">1 ऑफर · 14+14</span><span>22 स्क्रीन</span><span>A/B स्विच</span></div>
+    </a>
+
+    <div class="same">
+      <div class="t">दोनों में एक जैसा</div>
+      <div class="l">ऑफर <b>पेमेंट से पहले</b> कन्फर्म होता है · <b>₹10</b> सिर्फ़ जगह पक्की करने की फीस है · रिचार्ज का पैसा <b>नेट लगने वाले दिन</b>, जो प्लान चुनें उसी का · आख़िरी चैट में इनाम फिर याद दिलाया जाता है।</div>
+    </div>
+
+    <div class="foot">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7"/><path d="M12 11v5.5M12 7.6v.6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+      <span>हर फ्लो के अंदर बाएँ रेल से किसी भी स्क्रीन पर जा सकते हैं, और दाएँ पैनल से A/B वर्शन बदल सकते हैं।</span>
+    </div>
+  </div>
+</div>
+
+<aside class="side">
+  <div><h2>Wiom · बुकिंग फ्लो</h2><div class="st">नवीन बनाम रमेश · अगस्त 2026</div></div>
+
+  <div class="note">
+    <div class="hd">क्या चुनना है</div>
+    दोनों फ्लो एक ही सवाल के दो जवाब हैं: <b>ऑफर कहाँ और कैसे दिखे</b>।<br><br>
+    <b>नवीन</b> ऑफर को सामने रखता है, दाम बाद में आते हैं।<br>
+    <b>रमेश</b> दाम को सामने रखता है, ऑफर उसी सूची में एक पंक्ति पर बैठा है।
+  </div>
+
+  <div class="note">
+    <div class="hd">फ़र्क · एक नज़र में</div>
+    <div class="diff">
+      <i>·</i><span><b>स्क्रीन 9</b> · नवीन: "कोई ऑफर चल रहा है क्या?" · रमेश: "रिचार्ज कितने का होता है?"</span>
+      <i>·</i><span><b>स्क्रीन 10</b> · नवीन: 3 ऑफर कार्ड · रमेश: पाँचों दाम की सूची, 14 दिन वाली पंक्ति पर ऑफर</span>
+      <i>·</i><span><b>ऑफर की संख्या</b> · नवीन: 3 · रमेश: 1</span>
+      <i>·</i><span><b>प्लान शीट</b> · नवीन में है (सिर्फ़ जानकारी) · रमेश में हटी है</span>
+    </div>
+  </div>
+
+  <div class="note">
+    <div class="hd">A बनाम B · दोनों के अंदर</div>
+    <b>A</b> · पेमेंट के तुरंत बाद "इनाम जुड़ गया 🎉" स्क्रीन रहती है (23 स्क्रीन)।<br>
+    <b>B</b> · वो स्क्रीन हटी है, इनाम सिर्फ़ आख़िरी चैट में (22 स्क्रीन)। <b>डिफ़ॉल्ट B है</b>, क्योंकि ऑफर पेमेंट से पहले ही कन्फर्म हो चुका होता है।
+  </div>
+</aside>
+
+</body></html>
