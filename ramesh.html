@@ -1159,12 +1159,21 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
 .prc{margin-top:24px;border:1px solid var(--stroke-pri);border-radius:16px;overflow:hidden;background:#fff}
 .prc-r{padding:15px 16px;cursor:pointer;transition:background .18s var(--ease)}
 .prc-r + .prc-r{border-top:1px solid var(--stroke-pri)}
-.prc-r.has{background:var(--bg-positive-pri)}
+.prc-r.has{background:#fff}
 .prc-r:hover{background:var(--bg-neutral-sec)}
-.prc-r.has:hover{background:var(--bg-positive-sec)}
+.prc-r.has:hover{background:var(--bg-neutral-sec)}
 .prc-r:focus-visible{outline:2px solid var(--bg-brand-focus);outline-offset:-2px}
 .prc-r.open{background:#fff;box-shadow:inset 0 0 0 1.5px var(--bg-brand-focus)}
 .prc-r.has.open{box-shadow:inset 0 0 0 1.5px var(--stroke-positive);background:var(--bg-positive-pri)}
+/* बंद पंक्ति पर टैग ही अकेला इशारा है, इसलिए वह धीरे-धीरे धड़कता है.
+   हर 3.4 सेकंड में एक बार — इतना कि नज़र पड़े, इतना नहीं कि चुभे. */
+@keyframes prcTagPulse{
+  0%,68%,100%{transform:none;box-shadow:0 0 0 0 rgba(0,128,67,0)}
+  78%{transform:scale(1.07);box-shadow:0 0 0 5px rgba(0,128,67,.15)}
+  90%{transform:scale(1);box-shadow:0 0 0 10px rgba(0,128,67,0)}
+}
+.prc-r:not(.open) .prc-b{animation:prcTagPulse 3.4s var(--ease) infinite}
+@media (prefers-reduced-motion:reduce){ .prc-r:not(.open) .prc-b{animation:none} }
 .prc-top{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:10px}
 .prc-l{display:flex;flex-direction:column}
 .prc-l .d{font-size:16px;line-height:22px;font-weight:800;color:var(--text-pri)}
@@ -1178,7 +1187,7 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
 .prc-c{font-size:17px;font-weight:800;color:var(--text-pri);white-space:nowrap}
 /* बंद पंक्ति पर दाम नहीं — सूची पढ़ने की है, चुनने की नहीं.
    दाम तब आता है जब यूज़र उसी पंक्ति के बारे में पूछता है. */
-.prc-chev{font-size:19px;font-weight:800;color:var(--text-ter);opacity:.7;line-height:1}
+.prc-chev{display:flex;align-items:center;color:var(--text-ter);opacity:.75}
 .prc-grab{display:block;width:100%;margin-top:12px;background:var(--text-positive);color:#fff;border:none;
   border-radius:12px;padding:11px 14px;font:800 13.5px/19px 'Noto Sans','Noto Sans Devanagari',sans-serif;
   cursor:pointer;transition:.14s;-webkit-tap-highlight-color:transparent}
@@ -1525,7 +1534,7 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
           <p class="fig-sub" style="margin-top:8px">जितने दिन का चाहें, उतने का ही। किसी भी प्लान पर टैप करके उसका दाम देखिए।</p>
         </div>
         <div class="prc rv d2" id="prcList"></div>
-        <div class="prc-note rv d3"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><rect x="3" y="8" width="18" height="4" rx="1" stroke="#008043" stroke-width="1.8"/><path d="M5 12v8h14v-8M12 8v12" stroke="#008043" stroke-width="1.8"/><path d="M12 8C11 5 9.5 4.5 8.5 5.2 7.3 6 8 8 12 8zM12 8c1-3 2.5-3.5 3.5-2.8C16.7 6 16 8 12 8z" stroke="#008043" stroke-width="1.6" stroke-linejoin="round"/></svg><span>अभी सिर्फ़ <b>14+14</b> ऑफर चल रहा है · नेट लगवाने वाले दिन यही प्लान चुनकर इसका फ़ायदा ले सकते हैं।</span></div>
+        <div class="prc-note rv d3"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><rect x="3" y="8" width="18" height="4" rx="1" stroke="#008043" stroke-width="1.8"/><path d="M5 12v8h14v-8M12 8v12" stroke="#008043" stroke-width="1.8"/><path d="M12 8C11 5 9.5 4.5 8.5 5.2 7.3 6 8 8 12 8zM12 8c1-3 2.5-3.5 3.5-2.8C16.7 6 16 8 12 8z" stroke="#008043" stroke-width="1.6" stroke-linejoin="round"/></svg><span>अभी कुछ चुनना नहीं है, ये दाम सिर्फ़ देखने के लिए हैं। जिस दिन आपके घर <b>नेट लगेगा</b>, उस दिन 14 दिन का रिचार्ज करने पर यह ऑफर आपको <b>अपने आप मिल जाएगा</b>।</span></div>
       </div>
       <div class="actions"><button class="cta" id="offersCta">कैसे बुक करें?</button></div>
     </section>
@@ -2382,7 +2391,7 @@ $('#btnNext').onclick=next;$('#btnPrev').onclick=prev;
 const _mv2=$('#mVer'); if(_mv2) _mv2.onclick=()=>$('#pmPop').classList.toggle('open');
 const _mp=$('#mPrev'); if(_mp)_mp.onclick=prev;
 const _mn=$('#mNext'); if(_mn)_mn.onclick=next;
-const restart=()=>{prcOpen=3;Object.assign(state,{viaSheet:false,offersGrabbed:false,rewardPick:0,rewardApplied:false,rewardMsgPending:false,redeemOffer:-1,celeDone:false,offerSeen:false,plan:0,phone:'',locAddr:'Rajiv Colony, Sector 33',serviceable:true,name:'',landmark:'Hanuman Mandir',voiceDone:false});setLocAddr('Rajiv Colony, Sector 33');go(0);};
+const restart=()=>{prcOpen=-1;Object.assign(state,{viaSheet:false,offersGrabbed:false,rewardPick:0,rewardApplied:false,rewardMsgPending:false,redeemOffer:-1,celeDone:false,offerSeen:false,plan:0,phone:'',locAddr:'Rajiv Colony, Sector 33',serviceable:true,name:'',landmark:'Hanuman Mandir',voiceDone:false});setLocAddr('Rajiv Colony, Sector 33');go(0);};
 $('#btnRestart').onclick=restart;
 document.addEventListener('keydown',e=>{if(e.target.tagName==='INPUT')return;if(e.key==='Escape'){closeSheets();return;}if(e.key==='ArrowRight')next();if(e.key==='ArrowLeft')prev();if(e.key.toLowerCase()==='r')restart();});
 
@@ -2511,7 +2520,8 @@ const installDays=()=> PLANS[state.plan].days + bonusDays();
    ताकि आँख खुद तुलना कर सके. टैप करने लायक चीज़ ऑफ़र है, क्योंकि वहीं कुछ
    बदलता है: 14 → 28 आँखों के सामने बढ़ने से "₹305 में 28 दिन" समझाना नहीं
    पड़ता, दिख जाता है. क्रम: पहले दाम ठहरे, फिर दिन बढ़ें, फिर चमक. */
-let prcOpen = 3;                        /* 14 दिन — इसी पंक्ति पर ऑफर है, इसलिए यही खुली रहती है */
+const PRC_CHEV='<span class="prc-chev"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>';
+let prcOpen = -1;                       /* शुरू में कोई पंक्ति खुली नहीं — सूची पढ़ने की है */
 let prcAnimating = -1;                  /* जिस पंक्ति की गिनती अभी चल रही है */
 function renderOffers(){
   const l=$('#prcList'); if(!l) return;
@@ -2527,8 +2537,8 @@ function renderOffers(){
           <span class="d"><i data-cnt>${tot}</i> दिन</span>
           <span class="s">${open&&off?`${p.days} दिन + ${off.free} मुफ़्त`:p.span}</span>
         </div>
-        ${off?`<span class="prc-b${open?' on':''}">+${off.free} दिन मुफ़्त</span>`:'<span></span>'}
-        ${open?`<span class="prc-c">₹${p.cost}</span>`:'<span class="prc-chev">›</span>'}
+        ${off?`<span class="prc-b${open?' on':''}">${open?`+${off.free} दिन मुफ़्त`:'पहले रिचार्ज पर ऑफर'}</span>`:'<span></span>'}
+        ${open?`<span class="prc-c">₹${p.cost}</span>`:PRC_CHEV}
       </div>
       ${open?prcBody(p,off):''}
     </div>`;
