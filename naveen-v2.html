@@ -1512,7 +1512,7 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
         </div>
         <div class="footnote rv d3" style="margin-top:24px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#665E75" stroke-width="1.7"/><path d="M12 11v5.5M12 7.6v.6" stroke="#665E75" stroke-width="1.7" stroke-linecap="round"/></svg><span>नेट बॉक्स व्योम का होता है - बाद में बस वापस कर दें।</span></div>
         <div class="edu-dash rv d3" style="margin-top:22px"></div>
-        <div class="figlink b6 rv d4" style="justify-content:flex-start" data-plansheet>रिचार्ज कितने का होता है? <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="#D9008D" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="figlink b6 rv d4" style="justify-content:flex-start" data-plansheet><span id="costLinkTxt">रिचार्ज कितने का होता है?</span> <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="#D9008D" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
       </div>
       <div class="actions"><button class="cta" id="costCta">कोई ऑफर चल रहा है क्या?</button></div>
     </section>
@@ -1853,6 +1853,14 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
     <div class="pmside" id="flowBar">
       <span data-v="a">A · इनाम स्क्रीन के साथ</span>
       <span class="on" data-v="b">B · इनाम स्क्रीन के बिना</span>
+    </div>
+    <div class="lab" style="font-size:11px;font-weight:800;color:#8a8496;letter-spacing:.04em;text-transform:uppercase;margin:14px 0 0">केवल रिचार्ज · दाम वाला लिंक</div>
+    <div class="pmside" id="costLinkBar">
+      <span class="on">सवाल (अभी)</span>
+      <span>दाम आगे</span>
+      <span>सीधा</span>
+      <span>दायरा</span>
+      <span>बातचीत</span>
     </div>
     <div class="lab" style="font-size:11px;font-weight:800;color:#8a8496;letter-spacing:.04em;text-transform:uppercase;margin:14px 0 0">भुगतान स्क्रीन · सेक्शन</div>
     <div class="pmside" id="pmStyleBar">
@@ -2799,6 +2807,25 @@ function leaveRewards(){
   prev();
 }
 
+/* ═══ केवल रिचार्ज · दाम वाले लिंक के शब्द ═══
+   यह लिंक ही तय करता है कि यूज़र दाम देखने जाएगा या नहीं. सवाल पूछना
+   ईमानदार है, पर अंक देना खींचता है — इसलिए दोनों तरह के विकल्प रखे हैं.
+   मुख्य फ्लो में पहला ही चलता है; बाकी सिर्फ़ तुलना के लिए हैं. */
+const COST_LINKS = [
+  {k:'सवाल (अभी)',  t:'रिचार्ज कितने का होता है?'},
+  {k:'दाम आगे',     t:'रिचार्ज ₹23 से शुरू · दाम देखें'},
+  {k:'सीधा',        t:'रिचार्ज के दाम देखें'},
+  {k:'दायरा',       t:'1 दिन से 28 दिन तक · दाम देखें'},
+  {k:'बातचीत',      t:'तो रिचार्ज कितने का होता है?'},
+];
+let costLink = 0;
+function setCostLink(i){
+  costLink = i;
+  const el = $('#costLinkTxt'); if(el) el.textContent = COST_LINKS[i].t;
+  $$('#costLinkBar span').forEach((x,j)=>x.classList.toggle('on', j===i));
+}
+function initCostLink(){ $$('#costLinkBar span').forEach((b,j)=> b.onclick=()=>setCostLink(j)); }
+
 function syncCostCta(){
   const b=$('#costCta'); if(!b) return;
   if(state.viaSheet){                      /* offers already seen — the only question left is booking */
@@ -2821,7 +2848,7 @@ function setFlowVer(v){
 function initFlowBar(){ $$('#flowBar span').forEach(b=> b.onclick=()=>setFlowVer(b.dataset.v)); }
 const _mvHide=$('#mVer'); if(_mvHide) _mvHide.style.display='none';
 
-buildRail();initLanding();initPhone();initOtp();initPlanSheet();initSlider();initSlot();initOffers(); initRewardTabs(); initFlowBar(); initPmPos();
+buildRail();initLanding();initPhone();initOtp();initPlanSheet();initSlider();initSlot();initOffers(); initRewardTabs(); initFlowBar(); initPmPos(); initCostLink();
 const q=new URLSearchParams(location.search);const start=FLOW.findIndex(f=>f.id===q.get('screen'));
 go(start>=0?start:0);
 </script>
