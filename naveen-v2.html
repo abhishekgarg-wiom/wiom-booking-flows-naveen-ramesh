@@ -1216,10 +1216,12 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
    बैठ सकता है और बाकी स्क्रीन वैसी की वैसी रहती है. */
 .cost-slot:empty{display:none}
 .cost-slot > .figlink{justify-content:flex-start}
+.cost-slot > .figlink.center{justify-content:center}
+/* काला टेक्स्ट, गुलाबी तीर — तीर का रंग SVG में तय है, इसलिए वैसा ही रहता है */
+.figlink.ink{color:var(--text-pri);font-weight:700}
 #costSlotTitle{margin-top:14px}
 #costSlotBelow{margin-top:12px}
 #costSlotCta{margin-bottom:12px}
-#costSlotCta > .figlink{justify-content:center}
 .cost-slot.in-card{border-top:1px dashed #E0DAEC;margin:0 16px;padding:13px 0}
 .cost-dash{border-top:1.5px dashed #ddd6e8;margin-top:22px}
 .cost-dash.off{display:none}
@@ -1521,6 +1523,7 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
             <div class="sc-row"><span class="sc-l">सेटअप / इंस्टॉलेशन चार्ज</span><span class="sc-v">₹0</span></div>
             <div class="sc-row"><span class="sc-l">GST अलग से</span><span class="sc-v">₹0</span></div>
             <div class="sc-row"><span class="sc-l">छुपा चार्ज</span><span class="sc-v">₹0</span></div>
+            <div class="sc-row"><span class="sc-l">रिचार्ज करने का चार्ज</span><span class="sc-v">₹0</span></div>
             <div class="sc-row tot"><span class="sc-l">कुल अतिरिक्त</span><span class="sc-v">₹0</span></div>
           </div>
           <div class="cost-slot in-card" id="costSlotCard"></div>
@@ -1872,9 +1875,10 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
     <div class="lab" style="font-size:11px;font-weight:800;color:#8a8496;letter-spacing:.04em;text-transform:uppercase;margin:14px 0 0">केवल रिचार्ज · लिंक कहाँ</div>
     <div class="pmside" id="costPosBar">
       <span class="on">कार्ड के नीचे (अभी)</span>
+      <span>कार्ड के नीचे · बीच</span>
+      <span>हेडिंग के नीचे · बीच</span>
       <span>CTA के ऊपर</span>
       <span>कार्ड के अंदर</span>
-      <span>हेडिंग के नीचे</span>
     </div>
     <div class="lab" style="font-size:11px;font-weight:800;color:#8a8496;letter-spacing:.04em;text-transform:uppercase;margin:14px 0 0">भुगतान स्क्रीन · सेक्शन</div>
     <div class="pmside" id="pmStyleBar">
@@ -2826,17 +2830,22 @@ function leaveRewards(){
    स्लॉट में से किसी एक में चला जाता है — इसलिए हर वेरिएशन में वही
    बर्ताव, वही शीट. */
 const COST_POS = [
-  {k:'कार्ड के नीचे (अभी)', slot:'costSlotBelow',  dash:true},
-  {k:'CTA के ऊपर',          slot:'costSlotCta',    dash:false},
-  {k:'कार्ड के अंदर',        slot:'costSlotCard',   dash:false},
-  {k:'हेडिंग के नीचे',       slot:'costSlotTitle',  dash:false},
+  {k:'कार्ड के नीचे (अभी)',  slot:'costSlotBelow', dash:true},
+  {k:'कार्ड के नीचे · बीच',  slot:'costSlotBelow', dash:true, center:true, ink:true},
+  {k:'हेडिंग के नीचे · बीच', slot:'costSlotTitle', center:true},
+  {k:'CTA के ऊपर',           slot:'costSlotCta',   center:true},
+  {k:'कार्ड के अंदर',         slot:'costSlotCard'},
 ];
 let costPos = 0;
 function setCostPos(i){
   costPos = i;
-  const link = $('#costLink'), slot = $('#'+COST_POS[i].slot);
-  if(link && slot) slot.appendChild(link);
-  const d = $('#costDash'); if(d) d.classList.toggle('off', !COST_POS[i].dash);
+  const v = COST_POS[i], link = $('#costLink'), slot = $('#'+v.slot);
+  if(link && slot){
+    slot.appendChild(link);
+    link.classList.toggle('center', !!v.center);
+    link.classList.toggle('ink', !!v.ink);
+  }
+  const d = $('#costDash'); if(d) d.classList.toggle('off', !v.dash);
   $$('#costPosBar span').forEach((x,j)=>x.classList.toggle('on', j===i));
 }
 function initCostLink(){ $$('#costPosBar span').forEach((b,j)=> b.onclick=()=>setCostPos(j)); }
