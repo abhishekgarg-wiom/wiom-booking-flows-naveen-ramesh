@@ -1863,6 +1863,7 @@ const later=(fn,ms)=>state.timers.push(setTimeout(fn,ms));
 function go(i,back=false){
   if(i<0||i>=FLOW.length)return;
   clearTimers();closeSheets();
+  if(typeof clearOtpAuto === 'function') clearOtpAuto();
   $('.screen.active')?.classList.remove('active','in','back');
   state.idx=i;const s=FLOW[i],sc=screenEl(s.id);
   sc.classList.add('active',back?'back':'in');
@@ -1977,6 +1978,7 @@ function enterOtp(){
 function otpManual(){ clearOtpAuto(); const boxes=$$('#otpBoxes input'); boxes.forEach(b=>{b.value='';b.classList.remove('filled');}); closeSheet('otp'); if(boxes[0])boxes[0].focus(); }
 function otpDone(){
   clearInterval(resendTimer);
+  if(FLOW[state.idx] && FLOW[state.idx].id !== 'otp') return;   /* यूज़र आगे बढ़ चुका है */
   goTo('checking');
 }
 function otpBack(){closeSheets();goTo('phone',true);}

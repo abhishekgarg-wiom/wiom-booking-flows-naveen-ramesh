@@ -1194,6 +1194,18 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
 .eb-info .ic{flex:none;margin-top:1px}
 .eb-info p{flex:1;font-size:12.5px;line-height:18px;color:var(--purple);opacity:.9}
 .eb-info p b{font-weight:800;opacity:1}
+/* ═══ कार्ड स्टाइल · किनारे-से-किनारे का दूसरा रूप ═══
+   वही दो सेक्शन, पर हर एक अपना कार्ड. बीच की मोटी स्लेटी पट्टी की ज़रूरत
+   नहीं रहती — गैप और किनारा वही काम कर देते हैं. */
+.pmv-card{padding-top:14px}
+.pmv-card .es{margin:0 16px 12px;border:1px solid var(--stroke-pri);border-radius:16px;overflow:hidden}
+.pmv-card .es + .es{border-top:1px solid var(--stroke-pri)}
+.pmv-card .es.offer{border-color:var(--stroke-positive)}
+/* सूचना कार्ड के बाहर, सरफ़ेस पर, बिना रंग के — यह दाम नहीं, सिर्फ़ बात है */
+.eb-note{display:flex;gap:9px;align-items:flex-start;margin:2px 16px 0}
+.eb-note .ic{flex:none;margin-top:1px}
+.eb-note p{flex:1;font-size:12.5px;line-height:18px;color:var(--text-sec)}
+.eb-note p b{font-weight:800;color:var(--text-pri)}
 /* पता नीचे वाली वेरिएशन — CTA के ठीक ऊपर की पट्टी */
 #pmAddrBar:empty{display:none}
 .pmbar{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--stroke-pri);
@@ -1202,7 +1214,8 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
 .pmbar .t{font-size:11px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--text-ter)}
 .pmbar .s{font-size:13.5px;line-height:19px;font-weight:700;color:var(--text-pri);margin-top:2px;
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.pmbar .lk{flex:none;font-size:13px;font-weight:800;color:var(--text-brand);cursor:pointer}
+.pmbar .lk{flex:none;font-size:13px;font-weight:800;color:var(--text-brand);cursor:pointer;
+  background:none;padding:0;border-radius:0}
 /* "अगर ऐसा हुआ तो" — हर पंक्ति में तरीका, दावा नहीं */
 .es-if{display:flex;align-items:baseline;gap:10px;padding:9px 0}
 .es-if + .es-if{border-top:1px dashed var(--stroke-pri)}
@@ -1826,6 +1839,11 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
       <span data-v="a">A · इनाम स्क्रीन के साथ</span>
       <span class="on" data-v="b">B · इनाम स्क्रीन के बिना</span>
     </div>
+    <div class="lab" style="font-size:11px;font-weight:800;color:#8a8496;letter-spacing:.04em;text-transform:uppercase;margin:14px 0 0">भुगतान स्क्रीन · सेक्शन</div>
+    <div class="pmside" id="pmStyleBar">
+      <span class="on" data-v="edge">किनारे से किनारे</span>
+      <span data-v="card">कार्ड</span>
+    </div>
     <div class="lab" style="font-size:11px;font-weight:800;color:#8a8496;letter-spacing:.04em;text-transform:uppercase;margin:14px 0 0">भुगतान स्क्रीन · पता कहाँ</div>
     <div class="pmside" id="pmPosBar">
       <span class="on" data-v="top">ऊपर, कार्ट में</span>
@@ -1900,6 +1918,7 @@ const later=(fn,ms)=>state.timers.push(setTimeout(fn,ms));
 function go(i,back=false){
   if(i<0||i>=FLOW.length)return;
   clearTimers();closeSheets();
+  if(typeof clearOtpAuto === 'function') clearOtpAuto();
   $('.screen.active')?.classList.remove('active','in','back');
   state.idx=i;const s=FLOW[i],sc=screenEl(s.id);
   sc.classList.add('active',back?'back':'in');
@@ -2014,6 +2033,7 @@ function enterOtp(){
 function otpManual(){ clearOtpAuto(); const boxes=$$('#otpBoxes input'); boxes.forEach(b=>{b.value='';b.classList.remove('filled');}); closeSheet('otp'); if(boxes[0])boxes[0].focus(); }
 function otpDone(){
   clearInterval(resendTimer);
+  if(FLOW[state.idx] && FLOW[state.idx].id !== 'otp') return;   /* यूज़र आगे बढ़ चुका है */
   goTo('checking');
 }
 function otpBack(){closeSheets();goTo('phone',true);}
@@ -2169,6 +2189,9 @@ const esBill = p => p.fee
     <div class="s">₹${p.cost} में ही शामिल</div></div><b class="v z">₹0</b></div>
   <div class="eb tot"><div class="k"><div class="t">कुल</div></div><b class="v">₹${p.cost}</b></div></div>`;
 
+const EB_INFO_G='<svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#898296" stroke-width="1.7"/><path d="M12 11v5.5M12 7.6v.6" stroke="#898296" stroke-width="1.7" stroke-linecap="round"/></svg>';
+const esLaterCard = () => `<div class="eb-note"><span class="ic">${EB_INFO_G}</span>
+  <p><b>रिचार्ज</b> · नेट लगने वाले दिन आप जो प्लान चुनेंगे, उतना ही पैसा तब देना होगा</p></div>`;
 const esLater = () => `<div class="es"><div class="eb-info"><span class="ic">${EB_INFO}</span>
   <p><b>रिचार्ज</b> · नेट लगने वाले दिन आप जो प्लान चुनेंगे, उतना ही पैसा तब देना होगा</p></div></div>`;
 
@@ -2178,11 +2201,13 @@ const esRedeemStrip = () => { const o=OFFERS[state.redeemOffer]; if(!o) return '
       <div class="s">${o.pay} दिन का रिचार्ज · ${o.free} दिन मुफ़्त · नेट चलेगा ${o.pay+o.free} दिन</div></div>
     <span class="tag">✓ लगा</span></div></div>`; };
 
-/* पता ऊपर या नीचे — यही दो वेरिएशन हैं */
+/* दो स्वतंत्र स्विच: सेक्शन किनारे-से-किनारे या कार्ड, और पता ऊपर या नीचे */
+let pmStyle = 'edge';
 let pmAddr = 'top';
 const pmAddrBarHTML = () => `<div class="pmbar">${ES_PIN}<div class="tx">
   <div class="t">नेट लगने की जगह</div><div class="s">${PM_ADDR()}</div></div><span class="lk">बदलें</span></div>`;
-const esCompose = p => (pmAddr==='top' ? esAddr() : '') + esBill(p) + (p.fee ? esLater() : esRedeemStrip());
+const esCompose = p => (pmAddr==='top' ? esAddr() : '') + esBill(p)
+  + (p.fee ? (pmStyle==='card' ? esLaterCard() : esLater()) : esRedeemStrip());
 
 const esDetail = p => `<div class="es-dr"><span>${p.days} दिन का रिचार्ज</span><b>₹${p.cost}</b></div>
   <div class="es-dr"><span>नेट बॉक्स + लगवाई</span><b class="free">मुफ़्त</b></div>
@@ -2398,13 +2423,18 @@ function setPmVer(v){ pmVer = v; buildPmBar(); renderPm(); }
 function renderPm(){
   const st = $('#pmStage'); if(!st) return;
   const p = pmPlan();
-  st.className = ''; st.innerHTML = esCompose(p);
-  void st.offsetWidth; st.className = 'pmv-on';
+  const base = pmStyle==='card' ? 'pmv-card' : '';
+  st.className = base; st.innerHTML = esCompose(p);
+  void st.offsetWidth; st.className = (base ? base+' ' : '') + 'pmv-on';
   const bar = $('#pmAddrBar'); if(bar) bar.innerHTML = (pmAddr==='bottom') ? pmAddrBarHTML() : '';
   screenEl('paymethod').querySelectorAll('.pmsheet-scrim').forEach(e=>e.remove());
 }
 function setPmAddr(v){ pmAddr=v; $$('#pmPosBar span').forEach(x=>x.classList.toggle('on', x.dataset.v===v)); renderPm(); }
-function initPmPos(){ $$('#pmPosBar span').forEach(b=> b.onclick=()=>setPmAddr(b.dataset.v)); }
+function setPmStyle(v){ pmStyle=v; $$('#pmStyleBar span').forEach(x=>x.classList.toggle('on', x.dataset.v===v)); renderPm(); }
+function initPmPos(){
+  $$('#pmPosBar span').forEach(b=> b.onclick=()=>setPmAddr(b.dataset.v));
+  $$('#pmStyleBar span').forEach(b=> b.onclick=()=>setPmStyle(b.dataset.v));
+}
 
 function syncAmounts(){
   renderPm();
