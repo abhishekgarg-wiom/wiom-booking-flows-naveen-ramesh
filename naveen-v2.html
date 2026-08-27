@@ -1179,6 +1179,10 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
 .eb .k .s{font-size:12px;line-height:17px;color:var(--text-ter);margin-top:2px}
 .eb .k .g{display:flex;align-items:center;gap:5px;font-size:12px;line-height:17px;
   font-weight:700;color:var(--text-positive);margin-top:6px}
+/* ऑफर के नाम · हल्के, अलग-अलग — गिनने की चीज़ हैं, पढ़ने की नहीं */
+.eb-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.eb-chips span{background:var(--bg-neutral-sec);color:var(--text-ter);border-radius:100px;
+  padding:3px 10px;font-size:11px;line-height:16px;font-weight:700}
 .eb .k .g svg{flex:none}
 .eb .v{flex:none;font-size:15.5px;font-weight:800;color:var(--text-pri);white-space:nowrap}
 .eb .v.z{color:var(--text-positive)}
@@ -1668,7 +1672,7 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
       <div class="appbar">
         <div class="appbar-row"><div class="appbar-icon" data-back><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M19 12H5M5 12l6-6M5 12l6 6" stroke="#352d42" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
         </div>
-        <div class="appbar-title"><h1 class="fig-h" id="pmTitle">बस ₹10 · बुकिंग पक्की करें</h1></div>
+        <div class="appbar-title"><h1 class="fig-h" id="pmTitle">बस ₹10 देकर बुकिंग पक्की हो जाएगी</h1></div>
       </div>
       <div class="content">
         <div id="pmStage"></div>
@@ -2172,14 +2176,17 @@ const EB_INFO='<svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circ
 
 /* बुकिंग का कार्ट · तीन पंक्तियाँ. हर पंक्ति के नीचे वही बात जो उसी से
    जुड़ी है — रिफ़ंड फीस के नीचे, बॉक्स वाली बात ₹0 के नीचे. */
+/* तीन पंक्तियाँ अलग-अलग, ताकि हर फ्लो अपना क्रम चुन सके */
+const EB_ORDER = p => ebFee(p) + ebOffers() + ebFree();
+const ebFee = p => `<div class="eb"><div class="k"><div class="t">बुकिंग फीस</div><div class="s">जगह पक्की करने के लिए</div>
+    <div class="g">${EB_TICK} नेट नहीं लगा तो ₹${p.cost} वापस</div></div><b class="v">₹${p.cost}</b></div>`;
+const ebOffers = () => `<div class="eb"><div class="k"><div class="t">तीनों ऑफर जुड़ गए</div>
+    <div class="eb-chips">${PM_OFF.map(o=>`<span>${o.pay}+${o.free}</span>`).join('')}</div></div><b class="v z">₹0</b></div>`;
+const ebFree = () => `<div class="eb"><div class="k"><div class="t">नेट बॉक्स, लगवाई, जमा राशि, इत्यादि</div>
+    <div class="s">बॉक्स व्योम का होता है, बाद में बस वापस कर दें</div></div><b class="v z">₹0</b></div>`;
 const esBill = p => p.fee
   ? `<div class="es"><div class="es-h">क्या-क्या लग रहा है</div>
-  <div class="eb"><div class="k"><div class="t">बुकिंग फीस</div><div class="s">जगह पक्की करने के लिए</div>
-    <div class="g">${EB_TICK} नेट नहीं लगा तो ₹${p.cost} वापस</div></div><b class="v">₹${p.cost}</b></div>
-  <div class="eb"><div class="k"><div class="t">तीनों ऑफर जुड़ गए</div>
-    <div class="s">${PM_OFF.map(o=>`${o.pay}+${o.free}`).join(' · ')}</div></div><b class="v z">₹0</b></div>
-  <div class="eb"><div class="k"><div class="t">नेट बॉक्स, लगवाई, जमा राशि, इत्यादि</div>
-    <div class="s">बॉक्स व्योम का होता है, बाद में बस वापस कर दें</div></div><b class="v z">₹0</b></div>
+  ${EB_ORDER(p)}
   <div class="eb tot"><div class="k"><div class="t">कुल</div></div><b class="v">₹${p.cost}</b></div></div>`
   : `<div class="es"><div class="es-h">क्या-क्या लग रहा है</div>
   <div class="eb"><div class="k"><div class="t">${p.days} दिन का रिचार्ज</div>
@@ -2437,7 +2444,7 @@ function initPmPos(){
 function syncAmounts(){
   renderPm();
   const p=payPlan(), rd=state.redeemOffer>=0;
-  $('#pmTitle').textContent = rd ? `₹${p.cost} का रिचार्ज करें` : `बस ₹${p.cost} · बुकिंग पक्की करें`;
+  $('#pmTitle').textContent = rd ? `₹${p.cost} का रिचार्ज करें` : `बस ₹${p.cost} देकर बुकिंग पक्की हो जाएगी`;
   $('#pmCta').textContent=`UPI से ₹${p.cost} दें`;
   $('#procAmt').textContent = rd ? `₹${p.cost} रिचार्ज की स्थिति जाँची जा रही है`
                                  : `₹${p.cost} के भुगतान की स्थिति जाँची जा रही है`;
