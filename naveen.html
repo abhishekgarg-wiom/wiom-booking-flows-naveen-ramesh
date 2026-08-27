@@ -889,6 +889,23 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
 @keyframes otkPlus{to{opacity:1;transform:none}}
 @keyframes otkFade{to{opacity:1}}
 @keyframes otkPop{from{transform:scale(.72)}to{transform:none}}
+/* ═══ "नेट लगने वाले दिन अपने आप" · दोनों फ्लो में एक ही कॉलआउट ═══
+   यह ग्रे फुटनोट था और नज़र से छूट जाता था. अब हरा सरफ़ेस, बाईं ओर मोटी
+   पट्टी और एक ही मोटी लाइन — बात दो हिस्सों में: क्या होगा, फिर शर्त. */
+.ofnote{display:flex;gap:11px;align-items:flex-start;margin-top:18px;padding:13px 14px 13px 15px;
+  background:var(--bg-positive-pri);border:1px solid var(--stroke-positive);border-radius:14px;position:relative;overflow:hidden}
+.ofnote::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--text-positive)}
+.ofnote .ic{width:34px;height:34px;flex:none;border-radius:50%;background:#fff;display:grid;place-items:center;
+  animation:ofnPulse 3.4s var(--ease) infinite}
+.ofnote .tx{flex:1;min-width:0}
+.ofnote .t{font-size:14.5px;line-height:20px;font-weight:800;color:var(--text-positive)}
+.ofnote .s{font-size:12.5px;line-height:18px;color:var(--text-positive);opacity:.85;margin-top:3px}
+@keyframes ofnPulse{
+  0%,68%,100%{transform:none;box-shadow:0 0 0 0 rgba(0,128,67,0)}
+  78%{transform:scale(1.08);box-shadow:0 0 0 5px rgba(0,128,67,.16)}
+  90%{transform:scale(1);box-shadow:0 0 0 10px rgba(0,128,67,0)}
+}
+@media (prefers-reduced-motion:reduce){ .ofnote .ic{animation:none} }
 .otk-sep{border:none;border-top:1.5px dashed #ddd6e8;margin:18px 0 0}
 .otk-foot{margin-top:12px;display:flex;gap:8px;align-items:flex-start;font-size:13px;line-height:19px;color:var(--text-sec)}
 .otk-foot b{color:var(--text-pri);font-weight:700}
@@ -1494,8 +1511,7 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
           </div>
         </div>
 
-        <hr class="otk-sep">
-        <div class="otk-foot"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="flex:none;margin-top:2px"><rect x="3" y="8" width="18" height="4" rx="1" stroke="#008043" stroke-width="1.8"/><path d="M5 12v8h14v-8M12 8v12" stroke="#008043" stroke-width="1.8"/><path d="M12 8C11 5 9.5 4.5 8.5 5.2 7.3 6 8 8 12 8zM12 8c1-3 2.5-3.5 3.5-2.8C16.7 6 16 8 12 8z" stroke="#008043" stroke-width="1.6" stroke-linejoin="round"/></svg><span>अभी कुछ चुनना नहीं है। जिस दिन आपके घर <b>नेट लगेगा</b>, उस दिन आप 2, 7 या 14 दिन में से जो भी रिचार्ज करेंगे, उसका ऑफर आपको <b>अपने आप मिल जाएगा</b>।</span></div>
+        <div class="ofnote"><span class="ic"><svg width="19" height="19" viewBox="0 0 24 24" fill="none"><rect x="3" y="8" width="18" height="4" rx="1" stroke="#008043" stroke-width="1.8"/><path d="M5 12v8h14v-8M12 8v12" stroke="#008043" stroke-width="1.8"/><path d="M12 8C11 5 9.5 4.5 8.5 5.2 7.3 6 8 8 12 8zM12 8c1-3 2.5-3.5 3.5-2.8C16.7 6 16 8 12 8z" stroke="#008043" stroke-width="1.6" stroke-linejoin="round"/></svg></span><div class="tx"><div class="t">नेट लगने वाले दिन ऑफर अपने आप लगेगा</div><div class="s">अभी कुछ नहीं चुनना · 2, 7 या 14 दिन के रिचार्ज पर</div></div></div>
       </div>
       <div class="actions"><button class="cta" id="offersCta">कैसे बुक करें?</button></div>
     </section>
