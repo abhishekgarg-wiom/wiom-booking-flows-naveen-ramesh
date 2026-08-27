@@ -2223,8 +2223,8 @@ const esBill = p => p.fee
   <div class="eb"><div class="k"><div class="t">बुकिंग फीस</div><div class="s">जगह पक्की करने के लिए</div>
     <div class="g">${EB_TICK} नेट नहीं लगा तो ₹${p.cost} वापस</div></div><b class="v">₹${p.cost}</b></div>
   <div class="eb"><div class="k"><div class="t">तीनों ऑफर जुड़ गए</div>
-    <div class="s">${PM_OFF.map(o=>`${o.pay}+${o.free}`).join(' · ')} · नेट लगने वाले दिन के रिचार्ज पर लगेंगे</div></div><b class="v z">₹0</b></div>
-  <div class="eb"><div class="k"><div class="t">नेट बॉक्स, लगवाई, जमा राशि</div>
+    <div class="s">${PM_OFF.map(o=>`${o.pay}+${o.free}`).join(' · ')}</div></div><b class="v z">₹0</b></div>
+  <div class="eb"><div class="k"><div class="t">नेट बॉक्स, लगवाई, जमा राशि, इत्यादि</div>
     <div class="s">बॉक्स व्योम का होता है, बाद में बस वापस कर दें</div></div><b class="v z">₹0</b></div>
   <div class="eb tot"><div class="k"><div class="t">कुल</div></div><b class="v">₹${p.cost}</b></div></div>`
   : `<div class="es"><div class="es-h">क्या-क्या लग रहा है</div>
@@ -2235,9 +2235,9 @@ const esBill = p => p.fee
   <div class="eb tot"><div class="k"><div class="t">कुल</div></div><b class="v">₹${p.cost}</b></div></div>`;
 
 const EB_INFO_G='<svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#898296" stroke-width="1.7"/><path d="M12 11v5.5M12 7.6v.6" stroke="#898296" stroke-width="1.7" stroke-linecap="round"/></svg>';
-const esLaterCard = () => `<div class="eb-note"><span class="ic">${EB_INFO_G}</span>रिचार्ज · नेट लगने वाले दिन आप जो प्लान चुनेंगे, उतना ही पैसा तब देना होगा</div>`;
+const esLaterCard = () => `<div class="eb-note"><span class="ic">${EB_INFO_G}</span>नेट लगने वाले दिन आप जो रिचार्ज चुनेंगे, उतना ही पैसा तब देना होगा</div>`;
 const esLater = () => `<div class="es"><div class="eb-info"><span class="ic">${EB_INFO}</span>
-  <p>रिचार्ज · नेट लगने वाले दिन आप जो प्लान चुनेंगे, उतना ही पैसा तब देना होगा</p></div></div>`;
+  <p>नेट लगने वाले दिन आप जो रिचार्ज चुनेंगे, उतना ही पैसा तब देना होगा</p></div></div>`;
 
 const esRedeemStrip = () => { const o=OFFERS[state.redeemOffer]; if(!o) return '';
   return `<div class="es offer"><div class="es-off"><span class="ic">${esG('#008043')}</span>
