@@ -1923,7 +1923,7 @@ const LM_TYPES=[{k:'मंदिर / मस्जिद / गुरुद्व
 
 const state={idx:0,plan:0,phone:'',date:'27 जुलाई',
   locAddr:'Rajiv Colony, Sector 33',serviceable:true,
-  name:'',landmark:'Hanuman Mandir',voiceDone:false,timers:[],
+  name:'',landmark:'Hanuman Mandir',voiceDone:false,permDone:false,timers:[],
   viaSheet:false,offersGrabbed:false,rewardPick:1,rewardApplied:false,rewardMsgPending:false,redeemOffer:-1,celeDone:false};
 const cur=()=>PLANS[state.plan];
 const $=(s,r=document)=>r.querySelector(s);
@@ -1959,13 +1959,18 @@ const prev=()=>go(state.idx-1,true);
 
 function onEnter(id){
   const _mv=$('#mVer'); if(_mv) _mv.style.display = 'none';
+  /* परमिशन डायलॉग सिर्फ़ अपनी स्क्रीन पर. पहले यह display:grid छोड़ दिया जाता था
+     और आगे-पीछे चलने पर वापस लौटते ही सामने खड़ा मिलता था. */
+  if(id!=='checking'){ const _po=$('#permOverlay'); if(_po) _po.style.display='none'; }
   if(id!=='paymethod'){ const _pp=$('#pmPop'); if(_pp) _pp.classList.remove('open'); }
   stopEdu2Auto();
   switch(id){
     case 'splash':later(()=>goTo('landing'),1600);break;
     case 'phone':setupPhone();break;
     case 'otp':enterOtp();break;
-    case 'checking':$('#permOverlay').style.display='none';later(()=>{$('#permOverlay').style.display='grid';},1000);break;
+    case 'checking':$('#permOverlay').style.display='none';
+      if(!state.permDone) later(()=>{$('#permOverlay').style.display='grid';},1000);
+      break;
     case 'edu2':syncEdu2Cta();startEdu2Auto();break;
     case 'cost':syncCostCta();break;
     case 'offers':enterOffers();syncOffersCta();break;
@@ -2020,8 +2025,9 @@ function initPhone(){
   /* SIM number hint (Figma 353:30184) */
   $$('#simHint .sim-opt').forEach(el=>el.onclick=()=>{ inp.value=el.dataset.sim; syncPhoneCta(); $('#simHint').style.display='none'; });
   $('#simNone').onclick=()=>{ $('#simHint').style.display='none'; inp.focus(); };
-  $$('.perm-allow').forEach(el=>el.onclick=()=>{ $('#permOverlay').style.display='none'; later(()=>goTo('serviceable'),1900); });
-  $$('.perm-deny').forEach(el=>el.onclick=()=>goTo('phone',true));
+  $$('.perm-allow').forEach(el=>el.onclick=()=>{ state.permDone=true; $('#permOverlay').style.display='none'; later(()=>goTo('serviceable'),1900); });
+  {const po=$('#permOverlay'); if(po) po.onclick=e=>{ if(e.target===po){ state.permDone=true; po.style.display='none'; } };}
+  $$('.perm-deny').forEach(el=>el.onclick=()=>{ state.permDone=true; goTo('phone',true); });
   /* pay CTA (recharge = booking) */
   /* name + address (Figma 14865) */
   $('#inName').oninput=syncAddrCta; $('#inHouse').oninput=syncAddrCta;
@@ -2463,7 +2469,7 @@ $('#btnNext').onclick=next;$('#btnPrev').onclick=prev;
 const _mv2=$('#mVer'); if(_mv2) _mv2.onclick=()=>$('#pmPop').classList.toggle('open');
 const _mp=$('#mPrev'); if(_mp)_mp.onclick=prev;
 const _mn=$('#mNext'); if(_mn)_mn.onclick=next;
-const restart=()=>{prcOpen=0;Object.assign(state,{viaSheet:false,offersGrabbed:false,rewardPick:1,rewardApplied:false,rewardMsgPending:false,redeemOffer:-1,celeDone:false,plan:0,phone:'',locAddr:'Rajiv Colony, Sector 33',serviceable:true,name:'',landmark:'Hanuman Mandir',voiceDone:false});setLocAddr('Rajiv Colony, Sector 33');go(0);};
+const restart=()=>{prcOpen=0;Object.assign(state,{viaSheet:false,offersGrabbed:false,rewardPick:1,rewardApplied:false,rewardMsgPending:false,redeemOffer:-1,celeDone:false,plan:0,phone:'',locAddr:'Rajiv Colony, Sector 33',serviceable:true,name:'',landmark:'Hanuman Mandir',voiceDone:false,permDone:false});setLocAddr('Rajiv Colony, Sector 33');go(0);};
 $('#btnRestart').onclick=restart;
 document.addEventListener('keydown',e=>{if(e.target.tagName==='INPUT')return;if(e.key==='Escape'){closeSheets();return;}if(e.key==='ArrowRight')next();if(e.key==='ArrowLeft')prev();if(e.key.toLowerCase()==='r')restart();});
 
