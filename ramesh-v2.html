@@ -1263,9 +1263,14 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
 .eb .k .g svg{flex:none}
 .eb .v{flex:none;font-size:15.5px;font-weight:800;color:var(--text-pri);white-space:nowrap}
 .eb .v.z{color:var(--text-positive)}
-.eb.tot{border-top:1.5px solid var(--stroke-pri);margin-top:2px;padding-top:14px}
-.eb.tot .k .t{font-size:16px;font-weight:800}
-.eb.tot .v{font-size:20px}
+/* कुल · यह ऊपर वाली पंक्तियों का जोड़ है, इसलिए सूची के अंदर नहीं बैठता.
+   पहले यह भी एक आइटम जैसा दिखता था और ₹10 दो अलग चीज़ों जैसा पढ़ा जाता था.
+   अब कार्ड के किनारे से किनारे तक स्लेटी पट्टी, ऊपर ठोस लकीर, और अंक बड़ा. */
+.eb.tot{align-items:center;margin:2px -16px -14px;padding:15px 16px;
+  background:var(--bg-neutral-sec);border-top:1.5px solid var(--stroke-pri)}
+.eb.tot .k .t{font-size:15px;font-weight:800;color:var(--text-pri)}
+.eb.tot .k .s{color:var(--text-sec);margin-top:1px}
+.eb.tot .v{font-size:24px;letter-spacing:-.5px}
 .eb-info{display:flex;gap:10px;align-items:flex-start;background:var(--bg-info-pri);
   border-radius:12px;padding:12px 13px}
 .eb-info .ic{flex:none;margin-top:1px}
@@ -2197,13 +2202,13 @@ const esBill = p => p.fee
     <div class="s">${PM_OFF.map(o=>`${o.pay}+${o.free}`).join(' · ')} · नेट लगने वाले दिन के रिचार्ज पर लगेंगे</div></div><b class="v z">₹0</b></div>
   <div class="eb"><div class="k"><div class="t">नेट बॉक्स, लगवाई, जमा राशि</div>
     <div class="s">बॉक्स व्योम का होता है, बाद में बस वापस कर दें</div></div><b class="v z">₹0</b></div>
-  <div class="eb tot"><div class="k"><div class="t">अभी देना है</div></div><b class="v">₹${p.cost}</b></div></div>`
+  <div class="eb tot"><div class="k"><div class="t">अभी देना है</div><div class="s">ऊपर की सब चीज़ें मिलाकर</div></div><b class="v">₹${p.cost}</b></div></div>`
   : `<div class="es"><div class="es-h">क्या-क्या लग रहा है</div>
   <div class="eb"><div class="k"><div class="t">${p.days} दिन का रिचार्ज</div>
     <div class="s">80 से 100 Mbps · डेटा की कोई लिमिट नहीं</div></div><b class="v">₹${p.cost}</b></div>
   <div class="eb"><div class="k"><div class="t">GST और बाकी सब</div>
     <div class="s">₹${p.cost} में ही शामिल</div></div><b class="v z">₹0</b></div>
-  <div class="eb tot"><div class="k"><div class="t">अभी देना है</div></div><b class="v">₹${p.cost}</b></div></div>`;
+  <div class="eb tot"><div class="k"><div class="t">अभी देना है</div><div class="s">ऊपर की सब चीज़ें मिलाकर</div></div><b class="v">₹${p.cost}</b></div></div>`;
 
 const esLater = () => `<div class="es"><div class="eb-info"><span class="ic">${EB_INFO}</span>
   <div><b>रिचार्ज</b><span>नेट लगने वाले दिन आप जो प्लान चुनेंगे, उतना ही पैसा तब देना होगा</span></div></div></div>`;
