@@ -1163,7 +1163,7 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
 .prc-r:hover{background:var(--bg-neutral-sec)}
 .prc-r.has:hover{background:var(--bg-neutral-sec)}
 .prc-r:focus-visible{outline:2px solid var(--bg-brand-focus);outline-offset:-2px}
-.prc-r.open{background:#fff;box-shadow:inset 0 0 0 1.5px var(--bg-brand-focus)}
+.prc-r.open{background:var(--bg-brand-subtle);box-shadow:inset 0 0 0 1.5px var(--bg-brand-focus)}
 .prc-r.has.open{box-shadow:inset 0 0 0 1.5px var(--stroke-positive);background:var(--bg-positive-pri)}
 /* बंद पंक्ति पर टैग ही अकेला इशारा है, इसलिए वह धीरे-धीरे धड़कता है.
    हर 3.4 सेकंड में एक बार — इतना कि नज़र पड़े, इतना नहीं कि चुभे. */
@@ -1219,23 +1219,6 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
   18%{opacity:1}
   100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(.9) rotate(160deg)}
 }
-/* ═══ "नेट लगने वाले दिन अपने आप" · दोनों फ्लो में एक ही कॉलआउट ═══
-   यह ग्रे फुटनोट था और नज़र से छूट जाता था. अब हरा सरफ़ेस, बाईं ओर मोटी
-   पट्टी और एक ही मोटी लाइन — बात दो हिस्सों में: क्या होगा, फिर शर्त. */
-.ofnote{display:flex;gap:11px;align-items:flex-start;margin-top:18px;padding:13px 14px 13px 15px;
-  background:var(--bg-positive-pri);border:1px solid var(--stroke-positive);border-radius:14px;position:relative;overflow:hidden}
-.ofnote::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--text-positive)}
-.ofnote .ic{width:34px;height:34px;flex:none;border-radius:50%;background:#fff;display:grid;place-items:center;
-  animation:ofnPulse 3.4s var(--ease) infinite}
-.ofnote .tx{flex:1;min-width:0}
-.ofnote .t{font-size:14.5px;line-height:20px;font-weight:800;color:var(--text-positive)}
-.ofnote .s{font-size:12.5px;line-height:18px;color:var(--text-positive);opacity:.85;margin-top:3px}
-@keyframes ofnPulse{
-  0%,68%,100%{transform:none;box-shadow:0 0 0 0 rgba(0,128,67,0)}
-  78%{transform:scale(1.08);box-shadow:0 0 0 5px rgba(0,128,67,.16)}
-  90%{transform:scale(1);box-shadow:0 0 0 10px rgba(0,128,67,0)}
-}
-@media (prefers-reduced-motion:reduce){ .ofnote .ic{animation:none} }
 .prc-note{display:flex;align-items:flex-start;justify-content:center;gap:6px;margin-top:14px;
   font-size:12px;line-height:17px;color:var(--text-sec);text-align:center}
 .prc-note svg{flex:none;margin-top:1px}
@@ -1551,7 +1534,7 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
           <p class="fig-sub" style="margin-top:8px">जितने दिन का चाहें, उतने का ही।</p>
         </div>
         <div class="prc rv d2" id="prcList"></div>
-        <div class="ofnote rv d3"><span class="ic"><svg width="19" height="19" viewBox="0 0 24 24" fill="none"><rect x="3" y="8" width="18" height="4" rx="1" stroke="#008043" stroke-width="1.8"/><path d="M5 12v8h14v-8M12 8v12" stroke="#008043" stroke-width="1.8"/><path d="M12 8C11 5 9.5 4.5 8.5 5.2 7.3 6 8 8 12 8zM12 8c1-3 2.5-3.5 3.5-2.8C16.7 6 16 8 12 8z" stroke="#008043" stroke-width="1.6" stroke-linejoin="round"/></svg></span><div class="tx"><div class="t">नेट लगने वाले दिन ऑफर अपने आप लगेगा</div><div class="s">अभी कुछ नहीं चुनना · 14 दिन के रिचार्ज पर</div></div></div>
+        <div class="prc-note rv d3"><span>अभी कुछ चुनना नहीं है · नेट लगने के बाद जो दिन चाहिए, उतने का करा लेना।</span></div>
       </div>
       <div class="actions"><button class="cta" id="offersCta">कैसे बुक करें?</button></div>
     </section>
@@ -2408,7 +2391,7 @@ $('#btnNext').onclick=next;$('#btnPrev').onclick=prev;
 const _mv2=$('#mVer'); if(_mv2) _mv2.onclick=()=>$('#pmPop').classList.toggle('open');
 const _mp=$('#mPrev'); if(_mp)_mp.onclick=prev;
 const _mn=$('#mNext'); if(_mn)_mn.onclick=next;
-const restart=()=>{prcOpen=-1;Object.assign(state,{viaSheet:false,offersGrabbed:false,rewardPick:0,rewardApplied:false,rewardMsgPending:false,redeemOffer:-1,celeDone:false,offerSeen:false,plan:0,phone:'',locAddr:'Rajiv Colony, Sector 33',serviceable:true,name:'',landmark:'Hanuman Mandir',voiceDone:false});setLocAddr('Rajiv Colony, Sector 33');go(0);};
+const restart=()=>{prcOpen=0;Object.assign(state,{viaSheet:false,offersGrabbed:false,rewardPick:0,rewardApplied:false,rewardMsgPending:false,redeemOffer:-1,celeDone:false,offerSeen:false,plan:0,phone:'',locAddr:'Rajiv Colony, Sector 33',serviceable:true,name:'',landmark:'Hanuman Mandir',voiceDone:false});setLocAddr('Rajiv Colony, Sector 33');go(0);};
 $('#btnRestart').onclick=restart;
 document.addEventListener('keydown',e=>{if(e.target.tagName==='INPUT')return;if(e.key==='Escape'){closeSheets();return;}if(e.key==='ArrowRight')next();if(e.key==='ArrowLeft')prev();if(e.key.toLowerCase()==='r')restart();});
 
@@ -2538,7 +2521,7 @@ const installDays=()=> PLANS[state.plan].days + bonusDays();
    बदलता है: 14 → 28 आँखों के सामने बढ़ने से "₹305 में 28 दिन" समझाना नहीं
    पड़ता, दिख जाता है. क्रम: पहले दाम ठहरे, फिर दिन बढ़ें, फिर चमक. */
 const PRC_CHEV='<span class="prc-chev"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>';
-let prcOpen = -1;                       /* शुरू में कोई पंक्ति खुली नहीं — सूची पढ़ने की है */
+let prcOpen = 0;                        /* 1 दिन डिफ़ॉल्ट खुला — सबसे सस्ता दाम पहले से दिखे */
 let prcAnimating = -1;                  /* जिस पंक्ति की गिनती अभी चल रही है */
 function renderOffers(){
   const l=$('#prcList'); if(!l) return;
