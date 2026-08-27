@@ -1717,7 +1717,7 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
       <div class="appbar">
         <div class="appbar-row"><div class="appbar-icon" data-back><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M19 12H5M5 12l6-6M5 12l6 6" stroke="#352d42" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
         </div>
-        <div class="appbar-title"><h1 class="fig-h" id="pmTitle">बस ₹10 देकर बुकिंग पक्की हो जाएगी</h1></div>
+        <div class="appbar-title"><h1 class="fig-h" id="pmTitle">बस ₹10 देकर बुकिंग पक्की करें</h1></div>
       </div>
       <div class="content">
         <div id="pmStage"></div>
@@ -2491,7 +2491,7 @@ function initPmPos(){
 function syncAmounts(){
   renderPm();
   const p=payPlan(), rd=state.redeemOffer>=0;
-  $('#pmTitle').textContent = rd ? `₹${p.cost} का रिचार्ज करें` : `बस ₹${p.cost} देकर बुकिंग पक्की हो जाएगी`;
+  $('#pmTitle').textContent = rd ? `₹${p.cost} का रिचार्ज करें` : `बस ₹${p.cost} देकर बुकिंग पक्की करें`;
   $('#pmCta').textContent=`UPI से ₹${p.cost} दें`;
   $('#procAmt').textContent = rd ? `₹${p.cost} रिचार्ज की स्थिति जाँची जा रही है`
                                  : `₹${p.cost} के भुगतान की स्थिति जाँची जा रही है`;
@@ -2646,7 +2646,7 @@ function renderOffers(){
           <span class="d"><i data-cnt>${tot}</i> दिन</span>
           <span class="s">${open&&off?`${p.days} दिन + ${off.free} मुफ़्त`:p.span}</span>
         </div>
-        ${off && !open?`<span class="prc-b">पहले रिचार्ज पर ऑफर</span>`:'<span></span>'}
+        ${off?`<span class="prc-b${open?' on':''}">पहले रिचार्ज पर ऑफर</span>`:'<span></span>'}
         ${open?`<span class="prc-c">₹${p.cost}</span>`:PRC_CHEV}
       </div>
       ${open?prcBody(p,off):''}
