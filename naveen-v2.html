@@ -1007,18 +1007,19 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
     text-transform:uppercase;margin:18px 0 9px;text-align:center;opacity:0}
   .ofv.on .osmall-h{animation:fadeUp .45s var(--ease) .5s forwards}
   .osmall-row{display:flex;gap:10px}
-  .osmall{flex:1;background:#fff;border:1px solid var(--stroke-positive);border-radius:16px;padding:15px 11px 13px;text-align:center;
+  .osmall{flex:1;background:#fff;border:1px solid var(--stroke-pri);border-radius:16px;padding:20px 12px 16px;text-align:center;
     box-shadow:0 1px 2px rgba(22,16,33,.04);opacity:0;transform:translateY(12px)}
   .ofv.on .osmall:nth-child(1){animation:ofIn .45s var(--ease) .6s forwards}
   .ofv.on .osmall:nth-child(2){animation:ofIn .45s var(--ease) .72s forwards}
-  /* वही रचना जो बड़े कार्ड की है — मुफ़्त दिन बड़े, नीचे पूरी बात एक पट्टी में.
-     सिर्फ़ सफ़ेद और छोटा, ताकि 14+14 सबसे ऊपर बना रहे. */
-  .osm-free{font-size:27px;line-height:32px;font-weight:800;letter-spacing:-.9px;color:var(--text-positive)}
-  .osm-free span{display:block;font-size:11.5px;line-height:16px;font-weight:700;letter-spacing:0;
-    color:var(--text-positive);opacity:.85;margin-top:1px}
-  .osm-line{margin-top:10px;background:var(--bg-positive-pri);border-radius:10px;padding:8px 9px;
-    font-size:12px;line-height:17px;font-weight:600;color:var(--text-positive)}
-  .osm-line b{font-weight:800}
+  /* वही रचना जो बड़े कार्ड की है, पर सफ़ेद और छोटी.
+     हरा सिर्फ़ एक जगह — "मुफ़्त" पर. अंक और दाम सादे रहते हैं, वरना
+     पूरा कार्ड हरा हो जाता है और मुफ़्त होना अलग से दिखना बंद हो जाता है. */
+  .osm-free{font-size:28px;line-height:34px;font-weight:800;letter-spacing:-.9px;color:var(--text-pri)}
+  .osm-free span{display:block;font-size:11.5px;line-height:16px;font-weight:800;letter-spacing:0;
+    color:var(--text-positive);margin-top:4px}
+  .osm-line{margin-top:15px;background:var(--bg-neutral-sec);border-radius:10px;padding:9px 10px;
+    font-size:12px;line-height:17px;font-weight:600;color:var(--text-sec)}
+  .osm-line b{font-weight:800;color:var(--text-pri)}
 
   /* ── वर्शन C · ऑफर पोस्टर + कूपन ── */
   .opost{position:relative;text-align:center;padding:6px 0 4px;overflow:hidden}
