@@ -1176,6 +1176,14 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
 .prc-b{justify-self:start;font-size:11.5px;font-weight:800;color:var(--text-positive);
   background:#fff;border:1px solid var(--stroke-positive);border-radius:100px;padding:3px 9px;white-space:nowrap}
 .prc-c{font-size:17px;font-weight:800;color:var(--text-pri);white-space:nowrap}
+/* बंद पंक्ति पर दाम नहीं — सूची पढ़ने की है, चुनने की नहीं.
+   दाम तब आता है जब यूज़र उसी पंक्ति के बारे में पूछता है. */
+.prc-chev{font-size:19px;font-weight:800;color:var(--text-ter);opacity:.7;line-height:1}
+.prc-grab{display:block;width:100%;margin-top:12px;background:var(--text-positive);color:#fff;border:none;
+  border-radius:12px;padding:11px 14px;font:800 13.5px/19px 'Noto Sans','Noto Sans Devanagari',sans-serif;
+  cursor:pointer;transition:.14s;-webkit-tap-highlight-color:transparent}
+.prc-grab:hover{background:#00703a}
+.prc-grab.done{background:#fff;color:var(--text-positive);border:1.5px solid var(--stroke-positive);cursor:default}
 /* टैप करने का न्योता ऑफ़र पर है, दाम पर नहीं */
 .prc-b .cv,.prc-q .cv{font-style:normal;margin-left:4px;opacity:.75}
 .prc-b{transition:background .18s var(--ease),color .18s var(--ease)}
@@ -1514,12 +1522,12 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
       <div class="content">
         <div class="rv d1" style="margin-top:8px">
           <h1 class="fig-h">रिचार्ज इतने का होता है</h1>
-          <p class="fig-sub" style="margin-top:8px">जितने दिन का चाहें, उतने का ही।</p>
+          <p class="fig-sub" style="margin-top:8px">जितने दिन का चाहें, उतने का ही। किसी भी प्लान पर टैप करके उसका दाम देखिए।</p>
         </div>
         <div class="prc rv d2" id="prcList"></div>
         <div class="prc-note rv d3"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><rect x="3" y="8" width="18" height="4" rx="1" stroke="#008043" stroke-width="1.8"/><path d="M5 12v8h14v-8M12 8v12" stroke="#008043" stroke-width="1.8"/><path d="M12 8C11 5 9.5 4.5 8.5 5.2 7.3 6 8 8 12 8zM12 8c1-3 2.5-3.5 3.5-2.8C16.7 6 16 8 12 8z" stroke="#008043" stroke-width="1.6" stroke-linejoin="round"/></svg><span>अभी सिर्फ़ <b>14+14</b> ऑफर चल रहा है · नेट लगवाने वाले दिन यही प्लान चुनकर इसका फ़ायदा ले सकते हैं।</span></div>
       </div>
-      <div class="actions"><button class="cta" id="offersCta">14+14 ऑफर पक्का करें</button></div>
+      <div class="actions"><button class="cta" id="offersCta">कैसे बुक करें?</button></div>
     </section>
 
 
@@ -1786,8 +1794,8 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
     <div class="note">
       <b>रमेश वाला फ्लो:</b> नवीन वाले से अलग पहचान। ₹10 बुकिंग फीस वही है, पर ऑफर की जगह <b>पूरी प्लान लिस्ट</b> है।<br><br>
       0 · <b>केवल रिचार्ज</b> स्क्रीन का CTA ही <b>रिचार्ज कितने का होता है?</b> है · वहीं से दाम की पूरी सूची खुलती है (बॉटम शीट हटा दी)।<br>
-      1 · <b>3 ऑफर</b> वाली स्क्रीन हटी। उसकी जगह <b>रिचार्ज के दाम</b> · पाँचों प्लान एक साथ, ₹23 फ्लैगशिप, और सिर्फ़ <b>एक ऑफर 14+14</b> उसी पंक्ति पर। टैप करने पर 14 → 28 बढ़ता दिखता है।<br>
-      2 · CTA <b>14+14 ऑफर पक्का करें</b> से कन्फर्म शीट: ऑफर <b>रिचार्ज के समय</b> मिलेगा, यानी नेट लगवाने वाले दिन 14 दिन का प्लान चुनने पर।<br>
+      1 · <b>3 ऑफर</b> वाली स्क्रीन हटी। उसकी जगह <b>रिचार्ज के दाम</b> · सिर्फ़ पढ़ने की सूची, कोई प्लान चुना नहीं जाता। इसलिए न "यहीं से शुरू करें" निशान, न बंद पंक्ति पर दाम — टैप करने पर दाम खुलता है। <b>14 दिन</b> वाली पंक्ति खुली मिलती है क्योंकि ऑफर वहीं है, और 14 → 28 बढ़ता दिखता है।<br>
+      2 · पेज का CTA <b>कैसे बुक करें?</b> सीधे ₹10 वाली स्क्रीन पर ले जाता है। ऑफर की कन्फर्म शीट अब <b>ऑफर से ही</b> खुलती है: खुली पंक्ति में हरा बटन <b>"यह ऑफर मेरे नाम कर दें"</b>। CTA का काम बुकिंग समझाना है, ऑफर समझाना नहीं।<br>
       3 · आगे सब नवीन वाले जैसा: <b>₹10 बुकिंग फीस</b> → सादा भुगतान (रिचार्ज "बाद में") → दिन चुनें → चैट → बुकिंग पूरी।<br>
       4 · "इनाम जुड़ गया 🎉" स्क्रीन <b>वर्शन B में हटी</b> है (नीचे स्विच से A/B बदलें)।<br>
       5 · आख़िरी चैट: <b>नेट लगने वाले दिन आप इस ऑफर का फ़ायदा उठा पाएँगे</b> · उस दिन 14 दिन का रिचार्ज चुनिए, नेट चलेगा पूरे 28 दिन।
@@ -1846,7 +1854,7 @@ const LM_TYPES=[{k:'मंदिर / मस्जिद / गुरुद्व
 const state={idx:0,plan:0,phone:'',date:'27 जुलाई',
   locAddr:'Rajiv Colony, Sector 33',serviceable:true,
   name:'',landmark:'Hanuman Mandir',voiceDone:false,timers:[],
-  viaSheet:false,offersGrabbed:false,rewardPick:0,rewardApplied:false,rewardMsgPending:false,redeemOffer:-1,celeDone:false};
+  viaSheet:false,offersGrabbed:false,rewardPick:0,rewardApplied:false,rewardMsgPending:false,redeemOffer:-1,celeDone:false,offerSeen:false};
 const cur=()=>PLANS[state.plan];
 const $=(s,r=document)=>r.querySelector(s);
 const $$=(s,r=document)=>[...r.querySelectorAll(s)];
@@ -1890,7 +1898,7 @@ function onEnter(id){
     case 'checking':$('#permOverlay').style.display='none';later(()=>{$('#permOverlay').style.display='grid';},1000);break;
     case 'edu2':syncEdu2Cta();startEdu2Auto();break;
     case 'cost':syncCostCta();break;
-    case 'offers':renderOffers();syncOffersCta();break;
+    case 'offers':enterOffers();syncOffersCta();break;
     case 'detail':renderDetail();break;
     case 'paymethod':syncAmounts();break;
     case 'processing':syncAmounts();later(()=>goTo('paydone'),2000);break;
@@ -2374,7 +2382,7 @@ $('#btnNext').onclick=next;$('#btnPrev').onclick=prev;
 const _mv2=$('#mVer'); if(_mv2) _mv2.onclick=()=>$('#pmPop').classList.toggle('open');
 const _mp=$('#mPrev'); if(_mp)_mp.onclick=prev;
 const _mn=$('#mNext'); if(_mn)_mn.onclick=next;
-const restart=()=>{Object.assign(state,{viaSheet:false,offersGrabbed:false,rewardPick:0,rewardApplied:false,rewardMsgPending:false,redeemOffer:-1,celeDone:false,plan:0,phone:'',locAddr:'Rajiv Colony, Sector 33',serviceable:true,name:'',landmark:'Hanuman Mandir',voiceDone:false});setLocAddr('Rajiv Colony, Sector 33');go(0);};
+const restart=()=>{prcOpen=3;Object.assign(state,{viaSheet:false,offersGrabbed:false,rewardPick:0,rewardApplied:false,rewardMsgPending:false,redeemOffer:-1,celeDone:false,offerSeen:false,plan:0,phone:'',locAddr:'Rajiv Colony, Sector 33',serviceable:true,name:'',landmark:'Hanuman Mandir',voiceDone:false});setLocAddr('Rajiv Colony, Sector 33');go(0);};
 $('#btnRestart').onclick=restart;
 document.addEventListener('keydown',e=>{if(e.target.tagName==='INPUT')return;if(e.key==='Escape'){closeSheets();return;}if(e.key==='ArrowRight')next();if(e.key==='ArrowLeft')prev();if(e.key.toLowerCase()==='r')restart();});
 
@@ -2503,24 +2511,24 @@ const installDays=()=> PLANS[state.plan].days + bonusDays();
    ताकि आँख खुद तुलना कर सके. टैप करने लायक चीज़ ऑफ़र है, क्योंकि वहीं कुछ
    बदलता है: 14 → 28 आँखों के सामने बढ़ने से "₹305 में 28 दिन" समझाना नहीं
    पड़ता, दिख जाता है. क्रम: पहले दाम ठहरे, फिर दिन बढ़ें, फिर चमक. */
-let prcOpen = 0;                        /* फ्लैगशिप ₹23 खुला ही रहता है */
+let prcOpen = 3;                        /* 14 दिन — इसी पंक्ति पर ऑफर है, इसलिए यही खुली रहती है */
 let prcAnimating = -1;                  /* जिस पंक्ति की गिनती अभी चल रही है */
 function renderOffers(){
   const l=$('#prcList'); if(!l) return;
   l.innerHTML=PLANS.map((p,i)=>{
     const off=planOffer(p.days), open=i===prcOpen;
     const tot = (off && open && i!==prcAnimating) ? p.days+off.free : p.days;
-    const flag = i===0;                 /* 1 दिन ₹23 — यही फ्लैगशिप है */
-    return `<div class="prc-r${off?' has':''}${flag?' flag':''}${open?' open':''}" data-p="${i}" role="button" tabindex="0"
+    /* कोई पंक्ति "चुनी" नहीं जाती — यह सूची सिर्फ़ पढ़ने की है.
+       इसलिए न कोई फ्लैगशिप निशान, न बंद पंक्ति पर दाम. */
+    return `<div class="prc-r${off?' has':''}${open?' open':''}" data-p="${i}" role="button" tabindex="0"
       aria-expanded="${open}">
       <div class="prc-top">
         <div class="prc-l">
           <span class="d"><i data-cnt>${tot}</i> दिन</span>
           <span class="s">${open&&off?`${p.days} दिन + ${off.free} मुफ़्त`:p.span}</span>
         </div>
-        ${off?`<span class="prc-b${open?' on':''}">+${off.free} दिन मुफ़्त<i class="cv">›</i></span>`
-             :flag?`<span class="prc-flag">यहीं से शुरू करें</span>`:'<span></span>'}
-        <span class="prc-c">₹${p.cost}</span>
+        ${off?`<span class="prc-b${open?' on':''}">+${off.free} दिन मुफ़्त</span>`:'<span></span>'}
+        ${open?`<span class="prc-c">₹${p.cost}</span>`:'<span class="prc-chev">›</span>'}
       </div>
       ${open?prcBody(p,off):''}
     </div>`;
@@ -2530,18 +2538,36 @@ function renderOffers(){
     r.onclick=g;
     r.onkeydown=e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); g(); } };
   });
+  /* ऑफर की पुष्टि ऑफर से ही खुलती है — पेज के CTA से नहीं.
+     CTA का काम बुकिंग समझाना है, ऑफर समझाना नहीं. */
+  const gb=$('#prcList [data-grab]');
+  if(gb && !state.offerSeen) gb.onclick=e=>{ e.stopPropagation(); openOfferConfirm(); };
 }
 /* खुली पंक्ति का भीतरी हिस्सा — ऑफर हो तो जोड़, 28 दिन हो तो तुलना */
 function prcBody(p,off){
-  if(p.days===1) return `<div class="prc-x"><div class="prc-sum"><b>₹${p.cost}</b> में एक दिन का नेट
-    <span>यहीं से शुरू कीजिए · आगे जितने दिन का चाहें, उतने का।</span></div></div>`;
   if(off) return `<div class="prc-x">
     <div class="prc-sum"><b>₹${p.cost}</b> में पूरे <b>${p.days+off.free} दिन</b> नेट
       <span>${p.days} दिन का रिचार्ज + ${off.free} दिन मुफ़्त · नेट लगवाने वाले दिन यही प्लान चुनें</span></div>
+    <button class="prc-grab${state.offerSeen?' done':''}" data-grab>${state.offerSeen?'✓ ऑफर आपके नाम पक्का':'यह ऑफर मेरे नाम कर दें ›'}</button>
   </div>`;
+  if(p.days===1) return `<div class="prc-x"><div class="prc-sum"><b>₹${p.cost}</b> में एक दिन का नेट
+    <span>GST समेत · और कुछ नहीं देना</span></div></div>`;
   if(p.days===28) return `<div class="prc-x">${CMP28}</div>`;
   return `<div class="prc-x"><div class="prc-sum"><b>₹${p.cost}</b> में ${p.days} दिन नेट
     <span>GST समेत · और कुछ नहीं देना</span></div></div>`;
+}
+function enterOffers(){
+  const p = PLANS[prcOpen], off = p ? planOffer(p.days) : null;
+  prcAnimating = off ? prcOpen : -1;
+  renderOffers();
+  prcAnimating = -1;
+  if(!off) return;
+  const row=$(`#prcList [data-p="${prcOpen}"]`); if(!row) return;
+  const nn=row.querySelector('[data-cnt]');
+  later(()=>{
+    countDays(nn, p.days, p.days+off.free);
+    later(()=>sparkle(row,nn),560);
+  }, 620);
 }
 function openPrc(i){
   const same = prcOpen===i;
@@ -2600,7 +2626,7 @@ const easeInOutCubic = p => p<.5 ? 4*p*p*p : 1-Math.pow(-2*p+2,3)/2;
 function initPmVer(){ $$('#pmVer span').forEach(b=> b.onclick=()=>setPmVer(b.dataset.v)); }
 function initRewardTabs(){ const _b=$('#rwBack'); if(_b) _b.onclick=leaveRewards; $$('#rwTabs .rwtab').forEach(t => t.onclick = ()=>{ rwTab = t.dataset.t; renderRewards(); }); }
 function initOffers(){
-  const c=$('#ofcCta'); if(c) c.onclick=()=>{ closeSheet('ofc'); state.plan=INSTALL_PLAN; goTo('detail'); };
+  const c=$('#ofcCta'); if(c) c.onclick=()=>{ state.offerSeen=true; closeSheet('ofc'); state.plan=INSTALL_PLAN; goTo('detail'); };
   const sc=$('#ofcScrim'); if(sc) sc.onclick=()=>closeSheet('ofc');
 }
 /* offers → खर्चा when they arrived from the sheet, offers → booking otherwise */
@@ -2613,8 +2639,8 @@ function syncOffersCta(){
   } else {
     /* नवीन फ्लो: यहाँ यूज़र को साफ़ बताना है कि ये ऑफर *रिचार्ज के समय* मिलेंगे,
        बुकिंग के ₹10 में नहीं. इसलिए बुकिंग स्क्रीन से पहले एक कन्फर्म शीट. */
-    b.textContent = '14+14 ऑफर पक्का करें';
-    b.onclick = openOfferConfirm;
+    b.textContent = 'कैसे बुक करें?';
+    b.onclick = ()=>{ state.plan = INSTALL_PLAN; goTo('detail'); };
   }
 }
 function openOfferConfirm(){
