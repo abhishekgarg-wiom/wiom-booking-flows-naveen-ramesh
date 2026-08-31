@@ -35,17 +35,11 @@ body{font-family:'Noto Sans','Noto Sans Devanagari',system-ui,sans-serif;backgro
 h1.h{font-size:26px;line-height:34px;font-weight:800;letter-spacing:-.5px;margin-top:22px}
 p.sub{font-size:14px;line-height:21px;color:var(--text-sec);margin-top:8px}
 
-.card{background:#fff;border:1.5px solid var(--stroke-pri);border-radius:18px;padding:16px;margin-top:14px;
-  position:relative;overflow:hidden;transition:border-color .16s var(--ease),box-shadow .16s var(--ease)}
-.card:hover{border-color:var(--stroke-brand);box-shadow:0 10px 26px -14px rgba(217,0,141,.55)}
-/* एक फ्लो, दो वर्शन — नया पहले, पुराना साथ में रहता है */
-.vers{display:flex;gap:8px;margin-top:13px}
-.vers a{flex:1;text-decoration:none;text-align:center;border-radius:11px;padding:9px 10px;
-  font-size:13px;font-weight:800;transition:.14s;border:1.5px solid var(--stroke-pri);color:var(--text-sec);background:#fff}
-.vers a:hover{border-color:var(--stroke-brand);color:var(--text-brand)}
-.vers a.pri{background:var(--bg-brand-focus);border-color:var(--bg-brand-focus);color:#fff}
-.vers a.pri:hover{background:#c2007e;border-color:#c2007e;color:#fff}
-.vers a:focus-visible{outline:2px solid var(--bg-brand-focus);outline-offset:2px}
+.card{display:block;text-decoration:none;color:inherit;background:#fff;border:1.5px solid var(--stroke-pri);
+  border-radius:18px;padding:16px;margin-top:14px;cursor:pointer;position:relative;overflow:hidden;
+  transition:border-color .16s var(--ease),box-shadow .16s var(--ease),transform .16s var(--ease)}
+.card:hover{border-color:var(--stroke-brand);box-shadow:0 10px 26px -14px rgba(217,0,141,.55);transform:translateY(-2px)}
+.card:focus-visible{outline:2px solid var(--bg-brand-focus);outline-offset:2px}
 .card-top{display:flex;align-items:center;gap:10px}
 .card-ic{width:38px;height:38px;flex:none;border-radius:50%;display:grid;place-items:center}
 .card-ic.a{background:var(--bg-brand-subtle)}
@@ -94,36 +88,31 @@ p.sub{font-size:14px;line-height:21px;color:var(--text-sec);margin-top:8px}
       <b>व्योम</b>
     </div>
 
-    <h1 class="h">बुकिंग फ्लो · दो वर्शन</h1>
+    <h1 class="h">बुकिंग फ्लो · दो रास्ते</h1>
     <p class="sub">दोनों में ₹10 बुकिंग फीस है। फ़र्क सिर्फ़ इतना है कि ऑफर कैसे दिखाया जाता है।</p>
 
-    <div class="card">
+    <a class="card" href="naveen-v2.html">
       <div class="card-top">
         <span class="card-ic a"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="3" y="8" width="18" height="4" rx="1" stroke="#d9008d" stroke-width="1.8"/><path d="M5 12v8h14v-8M12 8v12" stroke="#d9008d" stroke-width="1.8"/><path d="M12 8C11 5 9.5 4.5 8.5 5.2 7.3 6 8 8 12 8zM12 8c1-3 2.5-3.5 3.5-2.8C16.7 6 16 8 12 8z" stroke="#d9008d" stroke-width="1.6" stroke-linejoin="round"/></svg></span>
         <span class="card-nm"><span class="n">नवीन वाला फ्लो</span><span class="k">3 ऑफर वाली स्क्रीन</span></span>
+        <span class="card-go">›</span>
       </div>
       <div class="card-l">तीन ऑफर एक साथ दिखते हैं: <b>2+2 · 7+7 · 14+14</b>। तीनों खाते में जुड़ते हैं, और नेट लगने वाले दिन जो रिचार्ज करेंगे उसी पर लगते हैं।</div>
-      <div class="chips"><span class="p">₹10 बुकिंग फीस</span><span class="g">3 ऑफर</span><span>A/B स्विच</span></div>
-      <div class="vers"><a class="pri" href="naveen-v2.html">v2 · नया ›</a><a href="naveen.html">v1</a></div>
-    </div>
+      <div class="chips"><span class="p">₹10 बुकिंग फीस</span><span class="g">3 ऑफर</span><span>21 स्क्रीन</span><span>A/B स्विच</span></div>
+    </a>
 
-    <div class="card">
+    <a class="card" href="ramesh-v2.html">
       <div class="card-top">
         <span class="card-ic b"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="3.5" y="4" width="17" height="16" rx="3" stroke="#6d17ce" stroke-width="1.8"/><path d="M7.5 9h9M7.5 12.5h9M7.5 16h5" stroke="#6d17ce" stroke-width="1.8" stroke-linecap="round"/></svg></span>
         <span class="card-nm"><span class="n">रमेश वाला फ्लो</span><span class="k">पूरी प्लान लिस्ट</span></span>
+        <span class="card-go">›</span>
       </div>
-      <div class="card-l">पाँचों रिचार्ज के दाम एक साथ, ऑफर उसी सूची में पंक्तियों पर बैठे हैं। <b>v2</b> में तीनों ऑफर हैं, <b>v1</b> में सिर्फ़ 14+14।</div>
-      <div class="chips"><span class="p">₹10 बुकिंग फीस</span><span class="g">v2 · 3 ऑफर</span><span>A/B स्विच</span></div>
-      <div class="vers"><a class="pri" href="ramesh-v2.html">v2 · नया ›</a><a href="ramesh.html">v1</a></div>
-    </div>
+      <div class="card-l">पाँचों रिचार्ज के दाम एक साथ, और <b>2, 7 और 14</b> वाली पंक्तियों पर ऑफर। दाम सिर्फ़ देखने के लिए हैं, चुनना कुछ नहीं है।</div>
+      <div class="chips"><span class="p">₹10 बुकिंग फीस</span><span class="g">3 ऑफर</span><span>20 स्क्रीन</span><span>A/B स्विच</span></div>
+    </a>
 
     <div class="same">
-      <div class="t">v2 में क्या बदला</div>
-      <div class="l">ऑफर वाली स्क्रीन का CTA अब सीधे <b>₹10 देकर बुकिंग पक्की करें</b> है, बीच वाली ₹10 स्क्रीन हट गई। <b>भुगतान का तरीका</b> छोटा है: तीन पंक्तियाँ, हर एक के नीचे उसी की बात। पते के लिए दो वेरिएशन (ऊपर कार्ट में, या नीचे CTA के ऊपर)।</div>
-    </div>
-
-    <div class="same">
-      <div class="t">चारों में एक जैसा</div>
+      <div class="t">दोनों में एक जैसा</div>
       <div class="l"><b>₹10</b> सिर्फ़ जगह पक्की करने की फीस है · रिचार्ज का पैसा <b>नेट लगने वाले दिन</b>, जो प्लान चुनें उसी का · आख़िरी चैट में इनाम फिर याद दिलाया जाता है।</div>
     </div>
 
@@ -141,16 +130,16 @@ p.sub{font-size:14px;line-height:21px;color:var(--text-sec);margin-top:8px}
     <div class="hd">क्या चुनना है</div>
     दोनों फ्लो एक ही सवाल के दो जवाब हैं: <b>ऑफर कहाँ और कैसे दिखे</b>।<br><br>
     <b>नवीन</b> ऑफर को सामने रखता है, दाम बाद में आते हैं।<br>
-    <b>रमेश</b> दाम को सामने रखता है, ऑफर उसी सूची में एक पंक्ति पर बैठा है।
+    <b>रमेश</b> दाम को सामने रखता है, ऑफर उन्हीं पंक्तियों पर बैठे हैं।
   </div>
 
   <div class="note">
     <div class="hd">फ़र्क · एक नज़र में</div>
     <div class="diff">
       <i>·</i><span><b>ऑफर स्क्रीन</b> · नवीन: 3 ऑफर कार्ड · रमेश: पाँचों दाम की सूची, ऑफर पंक्तियों पर</span>
-      <i>·</i><span><b>दाम का सवाल</b> · नवीन: "केवल रिचार्ज" स्क्रीन पर · रमेश v2: सीधे "रिचार्ज मॉडल" का CTA, वो स्क्रीन ही हटी</span>
-      <i>·</i><span><b>ऑफर की संख्या</b> · दोनों v2 में 3 · रमेश v1 में सिर्फ़ 14+14</span>
-      <i>·</i><span><b>स्क्रीन</b> · नवीन v2: 21 · रमेश v2: 20 (डिफ़ॉल्ट B)</span>
+      <i>·</i><span><b>दाम का सवाल</b> · नवीन: "केवल रिचार्ज" स्क्रीन पर · रमेश: सीधे "रिचार्ज मॉडल" का CTA, वो स्क्रीन ही हटी</span>
+      <i>·</i><span><b>भुगतान कार्ट</b> · नवीन: फीस पहले · रमेश: जो मुफ़्त है वो पहले, फीस आख़िर में</span>
+      <i>·</i><span><b>स्क्रीन</b> · नवीन: 21 · रमेश: 20 (डिफ़ॉल्ट B)</span>
     </div>
   </div>
 
