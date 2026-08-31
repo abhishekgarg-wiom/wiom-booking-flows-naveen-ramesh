@@ -1938,7 +1938,7 @@ const LM_TYPES=[{k:'मंदिर / मस्जिद / गुरुद्व
 const state={idx:0,plan:0,phone:'',date:'27 जुलाई',
   locAddr:'Rajiv Colony, Sector 33',serviceable:true,
   name:'',landmark:'Hanuman Mandir',voiceDone:false,permDone:false,timers:[],
-  viaSheet:false,offersGrabbed:false,rewardPick:1,rewardApplied:false,rewardMsgPending:false,redeemOffer:-1,celeDone:false};
+  viaSheet:false,offersGrabbed:false,rewardPick:1,rewardShown:false,rewardApplied:false,rewardMsgPending:false,redeemOffer:-1,celeDone:false};
 const cur=()=>PLANS[state.plan];
 const $=(s,r=document)=>r.querySelector(s);
 const $$=(s,r=document)=>[...r.querySelectorAll(s)];
@@ -2496,7 +2496,7 @@ $('#btnNext').onclick=next;$('#btnPrev').onclick=prev;
 const _mv2=$('#mVer'); if(_mv2) _mv2.onclick=()=>$('#pmPop').classList.toggle('open');
 const _mp=$('#mPrev'); if(_mp)_mp.onclick=prev;
 const _mn=$('#mNext'); if(_mn)_mn.onclick=next;
-const restart=()=>{Object.assign(state,{viaSheet:false,offersGrabbed:false,rewardPick:1,rewardApplied:false,rewardMsgPending:false,redeemOffer:-1,celeDone:false,plan:0,phone:'',locAddr:'Rajiv Colony, Sector 33',serviceable:true,name:'',landmark:'Hanuman Mandir',voiceDone:false,permDone:false});setLocAddr('Rajiv Colony, Sector 33');go(0);};
+const restart=()=>{Object.assign(state,{viaSheet:false,offersGrabbed:false,rewardPick:1,rewardShown:false,rewardApplied:false,rewardMsgPending:false,redeemOffer:-1,celeDone:false,plan:0,phone:'',locAddr:'Rajiv Colony, Sector 33',serviceable:true,name:'',landmark:'Hanuman Mandir',voiceDone:false,permDone:false});setLocAddr('Rajiv Colony, Sector 33');go(0);};
 $('#btnRestart').onclick=restart;
 document.addEventListener('keydown',e=>{if(e.target.tagName==='INPUT')return;if(e.key==='Escape'){closeSheets();return;}if(e.key==='ArrowRight')next();if(e.key==='ArrowLeft')prev();if(e.key.toLowerCase()==='r')restart();});
 
@@ -2555,7 +2555,9 @@ function runCelebrate(){
       : `आपकी बुकिंग पूरी हो गई है ✅ अब <b>${base} दिन तक आपका नेट चालू रहेगा</b> · 100 Mbps, <b>${activeTill(base)}</b> तक।`,'4:36 PM'));
     later(()=> celeTyping(()=>{
       celeAdd(celeBub('और एक खुशखबरी 🎁 आपके तीनों ऑफर <b>इनाम</b> बनकर खाते में जुड़ गए हैं।<br><br><b>नेट लगने वाले दिन आप इस ऑफर का फ़ायदा उठा पाएँगे</b> · उस दिन जो भी रिचार्ज करेंगे, उसी पर अपने आप लग जाएगा।','4:36 PM'));
-      later(runRewardMoment, 500);
+      /* जश्न यहाँ अपने आप नहीं चलता. पहले इनाम वाला कार्ड आता है और
+         पूरा मोमेंट तभी खुलता है जब यूज़र "इनाम देखें" दबाता है. */
+      later(()=>{ state.celeDone=true; addRewardMsg(); }, 500);
     }, 1000), 900);
   }, 1300), 400);
 }
@@ -2563,6 +2565,8 @@ function runCelebrate(){
 /* PR #372 — full-screen reward moment, then the gift flies into the app bar as the unread dot */
 function runRewardMoment(){
   const scr=screenEl('celebrate'); if(!scr.classList.contains('active')) return;
+  if(state.rewardShown){ goTo('rewards'); return; }   /* दूसरी बार सीधे इनाम पेज */
+  state.rewardShown = true;
   const slot=$('#rwSlot'), dot=$('#rwDot');
   const reduce=window.matchMedia && matchMedia('(prefers-reduced-motion:reduce)').matches;
   const ov=celeNode(`<div class="rc-ov">
@@ -2576,10 +2580,11 @@ function runRewardMoment(){
     </div>`);
   scr.appendChild(ov);
   if(!reduce) later(()=>celebrateConfetti(ov.querySelector('.rc-confetti')), 140);
+  /* गिफ्ट ऐप बार में बैठता है, बिंदी जलती है, और फिर इनाम पेज खुलता है */
   const land=()=>{
     state.celeDone=true;
     slot.classList.add('on');
-    later(()=>{ dot.classList.add('on'); addRewardMsg(); }, 160);
+    later(()=>{ dot.classList.add('on'); later(()=>goTo('rewards'), 520); }, 160);
   };
   /* holds 3.4s — long enough to read, which is the whole point of the surface */
   later(()=>{
@@ -2759,7 +2764,7 @@ function addRewardMsg(){
   const n=celeBub('<b>3 इनाम जुड़ गए 🎁</b><br>2+2, 7+7 और 14+14 · तीनों आपके नाम पर हैं।<br><br>नेट लगने वाले दिन जब 2, 7 या 14 दिन का रिचार्ज करेंगे, उसी पर अपने आप लग जाएँगे।','4:36 PM');
   const bub=n.querySelector('.ci-bub');
   const link=document.createElement('div'); link.className='ci-bcta'; link.textContent='इनाम देखें';
-  link.onclick=()=>goTo('rewards'); bub.appendChild(link);
+  link.onclick=runRewardMoment; bub.appendChild(link);
   celeAdd(n);
 }
 function applyReward(){
