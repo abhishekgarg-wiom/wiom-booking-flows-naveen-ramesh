@@ -3021,15 +3021,6 @@ function showStreetTip() {
       validateAddress(addressAttempted);
       const cta = $('#addrCta');
       if (cta.getAttribute('aria-disabled') === 'true') return;
-      let nudge = $('#addressNextNudge');
-      if (!nudge) {
-        nudge = document.createElement('p');
-        nudge.id = 'addressNextNudge';
-        nudge.setAttribute('role', 'status');
-        nudge.className = 'booking-step-copy';
-        cta.before(nudge);
-      }
-      nudge.textContent = 'अब नीचे दिए गए बटन पर टैप करें।';
       cta.focus();
     };
   }
@@ -3292,7 +3283,6 @@ const enterSingleBookingScreen = onEnter;
 onEnter = function(id) {
   enterSingleBookingScreen(id);
   if (id === 'payment-progress' || id === 'date-progress') renderBookingProgress(id);
-  if (id === 'address-form') $('#addressNextNudge')?.remove();
 };
 paymentVariant = 'steps';
 $('.variant-lab').innerHTML = '<div><strong>Wiom · Three-step booking</strong><small>भुगतान → दिन चुनें → पता लिखें</small></div><button type="button" class="variant-replay" id="restartSingleBooking">Start from summary</button>';
