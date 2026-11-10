@@ -1407,6 +1407,10 @@ body{display:grid!important;grid-template-columns:230px minmax(0,1fr);grid-templ
 .booking-address-action{max-width:290px;margin-bottom:12px}
 @media(prefers-reduced-motion:reduce){.three-step-main .step-icon,.three-step-main .handoff-step{transition:none!important;animation:none!important}}
 #dateAddressAction[hidden]{display:none}
+.chat-timeline-line{display:block;padding-left:.55em;line-height:1.05}
+.customer-bubble.booking-user-reply{margin-left:auto;background:white;border-radius:12px 0 12px 12px;width:fit-content;max-width:80%}
+.booking-reply-quote{background:#ebedf0;border-left:4px solid #a7a1b2;border-radius:8px;padding:8px 10px;margin-bottom:8px;color:#665e75}
+.booking-reply-quote strong{display:block;color:#161021}
 </style>
 </head>
 <body><div class="variant-lab" aria-label="Prototype variation controls"><div><strong>Payment acknowledgment</strong><small>3 concepts · Juspay → UPI app → Wiom · simulated payment</small></div><div class="variant-options"><button data-variant="banner" aria-pressed="false">02 · Compact banner</button><button data-variant="steps" aria-pressed="false">03 · Step tracker</button><button data-variant="conversation" aria-pressed="false">04 · Chat acknowledgment</button></div><button class="variant-replay" id="previewPayment">Preview payment →</button><button class="variant-replay" id="restartSummary">Start from summary</button><div class="variant-description" id="variantDescription"></div></div>
@@ -3244,19 +3248,27 @@ $('#confirmChatDate').onclick = () => {
   goTo('chat-pay');
 };
 
+function bookingDoneReply(quotedPrompt) {
+  return '<div class="customer-bubble booking-user-reply message-enter">' +
+    '<div class="booking-reply-quote"><strong>Wiom</strong>' + quotedPrompt + '</div>' +
+    '✔️ हो गया<time>अभी ✓</time></div>';
+}
+
 runChatPay = function() {
   const screen = screenEl('chat-pay');
   const messages = [];
   if (chatPaymentVerified) {
     messages.push(customerBubble('✅ <strong>₹10 का भुगतान मिल गया।</strong>', 'chatPaymentReceipt'));
+    const connector = '<span class="chat-timeline-line" aria-hidden="true">|</span>'.repeat(2);
     messages.push(customerBubble(
-      '✅ <small><strong>Step 1</strong></small> · ₹10 का भुगतान मिल गया<br><br>' +
-      '📍 <small><strong>Step 2</strong></small> · पता लिखें<br>पता देना बाकी है।<br><br>' +
-      '📅 <small><strong>Step 3</strong></small> · दिन चुनें<br>पता देने के बाद।',
+      '✅ <small><strong>Step 1</strong></small>: ₹10 का भुगतान मिल गया' + connector +
+      '📍 <small><strong>Step 2</strong></small>: अपना पता लिखें' + connector +
+      '📅 <small><strong>Step 3</strong></small>: नेट लगवाने का दिन चुनें',
       'chatInitialSteps'
     ));
   }
   if (savedChatAddress) {
+    messages.push(bookingDoneReply('अपना पता लिखें'));
     messages.push(customerBubble(
       '✅ <strong>आपका पता सेव हो गया।</strong><br><span data-saved-address></span>',
       'chatAddressReceipt'
@@ -3267,6 +3279,7 @@ runChatPay = function() {
     ));
   }
   if (confirmedChatDate) {
+    messages.push(bookingDoneReply('नेट लगवाने का दिन चुनें।'));
     messages.push(customerBubble(
       '✅ <strong>आपकी बुकिंग पक्की हो गई है।</strong><br>' +
       '<span data-confirmed-date></span> को आपके दिए हुए पते पर नेट लगाने आएँगे।',
