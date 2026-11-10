@@ -3255,14 +3255,17 @@ function bookingDoneReply(quotedPrompt) {
     '✔️ हो गया<time>अभी ✓</time></div>';
 }
 
-function bookingTimeline(addressSaved) {
+function bookingTimeline(addressSaved, dateConfirmed = false) {
   const connector = '<span class="chat-timeline-line" aria-hidden="true">|</span>'.repeat(2);
   const addressStep = addressSaved
     ? '✅ <small>Step 2</small>: पता सेव हो गया'
     : '🟠 <strong><small>Step 2</small>: अपना पता लिखें</strong>';
-  const dateStep = addressSaved
-    ? '🟠 <strong><small>Step 3</small>: नेट लगवाने का दिन चुनें</strong>'
-    : '⚪️ <small>Step 3</small>: नेट लगवाने का दिन';
+  let dateStep = '⚪️ <small>Step 3</small>: नेट लगवाने का दिन';
+  if (dateConfirmed) {
+    dateStep = '✅ <small>Step 3</small>: नेट लगवाने का दिन तय हो गया<br><span data-timeline-date></span>';
+  } else if (addressSaved) {
+    dateStep = '🟠 <strong><small>Step 3</small>: नेट लगवाने का दिन चुनें</strong>';
+  }
   return '✅ <small>Step 1</small>: ₹10 का भुगतान मिल गया' + connector +
     addressStep + connector + dateStep;
 }
@@ -3287,10 +3290,20 @@ runChatPay = function() {
   }
   if (confirmedChatDate) {
     messages.push(bookingDoneReply('नेट लगवाने का दिन चुनें।'));
+    messages.push(customerBubble(bookingTimeline(true, true), 'chatCompletedSteps'));
     messages.push(customerBubble(
       '✅ <strong>आपकी बुकिंग पक्की हो गई है।</strong><br>' +
-      '<span data-confirmed-date></span> को आपके दिए हुए पते पर नेट लगाने आएँगे।',
+      'पता मिल गया। अब सब तैयार है। <span data-confirmed-date></span> को इंजीनियर इसी पते पर नेट लगाने आएगा।<br><br>' +
+      'आपके लिए इंजीनियर ढूँढ रहे हैं। मिलते ही आपको बता देंगे।',
       'chatBookingReceipt'
+    ));
+    messages.push(customerBubble(
+      '📞 यह नंबर सेव कर लें: <strong><a href="tel:8880322222">8880322222</a></strong> — कोई भी सवाल हो तो कॉल करें या यहीं चैट पर पूछें।',
+      'chatSupportContact'
+    ));
+    messages.push(customerBubble(
+      'आपको <strong>वेलकम ऑफर</strong> 🎉 मिला है।<br>पहले रिचार्ज पर <strong>14 दिन तक का फ्री नेट</strong> मिलेगा।',
+      'chatWelcomeOffer'
     ));
   }
   const transcript = document.createElement('template');
@@ -3299,6 +3312,8 @@ runChatPay = function() {
   if (address) address.textContent = savedChatAddress;
   const date = transcript.content.querySelector('[data-confirmed-date]');
   if (date) date.textContent = confirmedChatDate;
+  const timelineDate = transcript.content.querySelector('[data-timeline-date]');
+  if (timelineDate) timelineDate.textContent = confirmedChatDate;
 
   const thread = mountCustomerChat(screen, '');
   if (!chatPaymentVerified) return;
