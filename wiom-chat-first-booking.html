@@ -1407,6 +1407,10 @@ body{display:grid!important;grid-template-columns:230px minmax(0,1fr);grid-templ
 .booking-address-action{max-width:290px;margin-bottom:12px}
 @media(prefers-reduced-motion:reduce){.three-step-main .step-icon,.three-step-main .handoff-step{transition:none!important;animation:none!important}}
 #dateAddressAction[hidden]{display:none}
+.chat-timeline-line{display:block;padding-left:.55em;line-height:1.05}
+.customer-bubble.booking-user-reply{margin-left:auto;background:white;border-radius:12px 0 12px 12px;width:fit-content;max-width:80%}
+.booking-reply-quote{background:#ebedf0;border-left:4px solid #a7a1b2;border-radius:8px;padding:8px 10px;margin-bottom:8px;color:#665e75}
+.booking-reply-quote strong{display:block;color:#161021}
 </style>
 </head>
 <body><div class="variant-lab" aria-label="Prototype variation controls"><div><strong>Payment acknowledgment</strong><small>3 concepts · Juspay → UPI app → Wiom · simulated payment</small></div><div class="variant-options"><button data-variant="banner" aria-pressed="false">02 · Compact banner</button><button data-variant="steps" aria-pressed="false">03 · Step tracker</button><button data-variant="conversation" aria-pressed="false">04 · Chat acknowledgment</button></div><button class="variant-replay" id="previewPayment">Preview payment →</button><button class="variant-replay" id="restartSummary">Start from summary</button><div class="variant-description" id="variantDescription"></div></div>
@@ -3220,6 +3224,7 @@ applyPaymentVariant();
 let savedChatAddress = '';
 let confirmedChatDate = '';
 let chatPaymentVerified = false;
+let revealedBookingMessages = 0;
 
 function saveChatAddress() {
   if (validateAddress(true)) {
@@ -3244,61 +3249,110 @@ $('#confirmChatDate').onclick = () => {
   goTo('chat-pay');
 };
 
+function bookingDoneReply(quotedPrompt) {
+  return '<div class="customer-bubble booking-user-reply message-enter">' +
+    '<div class="booking-reply-quote"><strong>Wiom</strong>' + quotedPrompt + '</div>' +
+    '✔️ हो गया<time>अभी ✓</time></div>';
+}
+
+function bookingTimeline(addressSaved) {
+  const connector = '<span class="chat-timeline-line" aria-hidden="true">|</span>'.repeat(2);
+  const addressStep = addressSaved
+    ? '✅ <small>Step 2</small>: पता सेव हो गया'
+    : '🟠 <strong><small>Step 2</small>: अपना पता लिखें</strong>';
+  const dateStep = addressSaved
+    ? '🟠 <strong><small>Step 3</small>: नेट लगवाने का दिन चुनें</strong>'
+    : '⚪️ <small>Step 3</small>: नेट लगवाने का दिन';
+  return '✅ <small>Step 1</small>: ₹10 का भुगतान मिल गया' + connector +
+    addressStep + connector + dateStep;
+}
+
 runChatPay = function() {
   const screen = screenEl('chat-pay');
   const messages = [];
   if (chatPaymentVerified) {
     messages.push(customerBubble('✅ <strong>₹10 का भुगतान मिल गया।</strong>', 'chatPaymentReceipt'));
-    messages.push(customerBubble(
-      '✅ <small><strong>Step 1</strong></small> · ₹10 का भुगतान मिल गया<br><br>' +
-      '📍 <small><strong>Step 2</strong></small> · पता लिखें<br>पता देना बाकी है।<br><br>' +
-      '📅 <small><strong>Step 3</strong></small> · दिन चुनें<br>पता देने के बाद।',
-      'chatInitialSteps'
-    ));
+    messages.push(customerBubble(bookingTimeline(false), 'chatInitialSteps'));
   }
   if (savedChatAddress) {
+    messages.push(bookingDoneReply('अपना पता लिखें'));
     messages.push(customerBubble(
       '✅ <strong>आपका पता सेव हो गया।</strong><br><span data-saved-address></span>',
       'chatAddressReceipt'
     ));
     messages.push(customerBubble(
-      '📅 <strong>बस एक काम बाकी है</strong><br>नेट लगवाने का दिन चुनें।',
+      bookingTimeline(true),
       'chatDatePrompt'
     ));
   }
   if (confirmedChatDate) {
+    messages.push(bookingDoneReply('नेट लगवाने का दिन चुनें।'));
     messages.push(customerBubble(
       '✅ <strong>आपकी बुकिंग पक्की हो गई है।</strong><br>' +
       '<span data-confirmed-date></span> को आपके दिए हुए पते पर नेट लगाने आएँगे।',
       'chatBookingReceipt'
     ));
   }
-  const thread = mountCustomerChat(screen, messages.join(''));
-  const address = thread.querySelector('[data-saved-address]');
+  const transcript = document.createElement('template');
+  transcript.innerHTML = messages.join('');
+  const address = transcript.content.querySelector('[data-saved-address]');
   if (address) address.textContent = savedChatAddress;
-  const date = thread.querySelector('[data-confirmed-date]');
-  if (date) {
-    date.textContent = confirmedChatDate;
-    screen.querySelector('.customer-netcard p').textContent = 'स्थिति: बुकिंग पक्की';
-  }
+  const date = transcript.content.querySelector('[data-confirmed-date]');
+  if (date) date.textContent = confirmedChatDate;
+
+  const thread = mountCustomerChat(screen, '');
   if (!chatPaymentVerified) return;
-  if (!confirmedChatDate) {
+  const bubbles = Array.from(transcript.content.children);
+  revealedBookingMessages = Math.min(revealedBookingMessages, bubbles.length);
+  for (const bubble of bubbles.slice(0, revealedBookingMessages)) {
+    bubble.classList.remove('message-enter');
+    thread.append(bubble);
+  }
+
+  function showNextAction() {
+    if (confirmedChatDate) {
+      screen.querySelector('.customer-netcard p').textContent = 'स्थिति: बुकिंग पक्की';
+      return;
+    }
     const action = document.createElement('div');
     action.className = 'booking-address-action';
     const button = document.createElement('button');
     button.type = 'button';
     button.className = 'cta';
     button.id = savedChatAddress ? 'chooseChatDate' : 'cpAddrCta';
-    button.textContent = savedChatAddress ? 'दिन चुनें' : 'पता लिखें';
+    button.textContent = savedChatAddress ? 'नेट का दिन चुनें' : 'पता लिखें';
     button.onclick = () => goTo(savedChatAddress ? 'slot' : 'address-form');
     action.append(button);
     thread.append(action);
   }
-  thread.scrollTop = thread.scrollHeight;
+
+  function revealNextMessage() {
+    const bubble = bubbles[revealedBookingMessages];
+    if (!bubble) {
+      showNextAction();
+      thread.scrollTop = thread.scrollHeight;
+      return;
+    }
+    const fromCustomer = bubble.classList.contains('booking-user-reply');
+    if (!fromCustomer) {
+      thread.insertAdjacentHTML('beforeend', customerTyping());
+      thread.scrollTop = thread.scrollHeight;
+    }
+    later(() => {
+      thread.querySelector('#customerTyping')?.remove();
+      thread.append(bubble);
+      revealedBookingMessages++;
+      thread.scrollTop = thread.scrollHeight;
+      later(revealNextMessage, 250);
+    }, fromCustomer ? 180 : 750);
+  }
+
+  revealNextMessage();
 };
 
 showVerifiedExperience = () => {
   chatPaymentVerified = true;
+  revealedBookingMessages = 0;
   savedChatAddress = '';
   confirmedChatDate = '';
   resetDateSelection();
@@ -3309,6 +3363,7 @@ $('.variant-lab').innerHTML = '<div><strong>Wiom · Chat-first booking</strong><
 $('#restartChatBooking').onclick = () => {
   clearExperience();
   chatPaymentVerified = false;
+  revealedBookingMessages = 0;
   savedChatAddress = '';
   confirmedChatDate = '';
   resetDateSelection();
